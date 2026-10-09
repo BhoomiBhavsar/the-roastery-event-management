@@ -71,3 +71,9 @@ docker-compose.override.yml
 *.tmp
 *.temp
 *.bak
+
+# Local development configuration
+
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.Local.json
