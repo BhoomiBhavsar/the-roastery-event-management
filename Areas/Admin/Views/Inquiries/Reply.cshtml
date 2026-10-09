@@ -1,0 +1,459 @@
+﻿@* @model EventMVC.Models.Inquiry
+@{
+    ViewData["Title"] = "Reply Inquiry";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .card {
+        background: var(--white);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        margin-bottom: 20px;
+    }
+
+
+    .page-header {
+        margin-bottom: 30px;
+    }
+
+    .card {
+        margin-bottom: 25px;
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .card-body {
+        padding: 25px;
+    }
+
+    h2 {
+        color: var(--primary-dark);
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+
+    h4 {
+        color: var(--primary-dark);
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    p {
+        color: var(--text-dark);
+        margin-bottom: 12px;
+    }
+
+    .alert-info {
+        background: rgba(224,196,159,.2);
+        border: 1px solid var(--border-color);
+        color: var(--text-dark);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 10px;
+    }
+
+    .alert-success {
+        background: rgba(181,136,94,.12);
+        border-left: 4px solid var(--primary-teal);
+        color: var(--text-dark);
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 12px;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid var(--border-color);
+        margin: 25px 0;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--white);
+        color: var(--text-dark);
+        transition: .3s;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary-teal);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(181,136,94,.15);
+        }
+
+    .btn-success {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary-teal));
+        border: none;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(115,65,32,.2);
+        }
+
+    small {
+        color: var(--text-light);
+    }
+</style>
+<div class="table-container">
+    <!-- your existing code -->
+
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Reply Inquiry</h1>
+    </div>
+</div>
+<div class="card">
+
+    <div class="card-body">
+
+        <h4>@Model.Name</h4>
+
+        <p>
+            <strong>Email:</strong>
+            @Model.Email
+        </p>
+
+        <p>
+            <strong>Phone:</strong>
+            @Model.PhoneNumber
+        </p>
+
+        <p>
+            <strong>Event:</strong>
+            @Model.EventType?.Name
+        </p>
+
+        <p>
+            <strong>Guests:</strong>
+            @Model.GuestCount
+        </p>
+
+        <p>
+            <strong>Message:</strong>
+        </p>
+
+        <div class="alert alert-info">
+            @Model.Message
+        </div>
+
+    </div>
+
+</div>
+
+<hr />
+
+<h4>Previous Replies</h4>
+
+@if (Model.InquiryReplies != null &&
+     Model.InquiryReplies.Any())
+{
+    foreach (var reply in Model.InquiryReplies)
+    {
+        <div class="alert alert-success">
+
+            <strong>
+                @reply.RepliedBy
+            </strong>
+
+            <br />
+
+            @reply.ReplyMessage
+
+            <br />
+
+            <small>
+                @reply.RepliedAt
+            </small>
+
+        </div>
+    }
+}
+else
+{
+    <p>No replies yet.</p>
+}
+
+<hr />
+
+<form method="post">
+
+    <input type="hidden"
+           name="inquiryId"
+           value="@Model.InquiryId" />
+
+    <div class="form-group">
+
+        <label>Reply Message</label>
+
+        <textarea name="replyMessage"
+                  class="form-control"
+                  rows="5"
+                  required></textarea>
+
+    </div>
+
+    <br />
+
+    <button type="submit"
+            class="btn btn-success">
+        Send Reply
+    </button>
+
+</form>
+
+</div> *@
+
+
+
+@model EventMVC.Models.Inquiry
+
+@{
+    ViewData["Title"] = "Reply Inquiry";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .reply-container {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 25px;
+        margin-top: 20px;
+    }
+
+    .info-card, .reply-card {
+        background: var(--white);
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+    }
+
+    .card-header {
+        padding: 18px 22px;
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary-teal));
+        color: white;
+        font-weight: 600;
+        font-size: 16px;
+    }
+
+    .card-body {
+        padding: 22px;
+    }
+
+    .info-row {
+        margin-bottom: 12px;
+        color: var(--text-dark);
+        font-size: 14px;
+    }
+
+        .info-row strong {
+            color: var(--primary-dark);
+            min-width: 90px;
+            display: inline-block;
+        }
+
+    .message-box {
+        margin-top: 10px;
+        padding: 15px;
+        background: rgba(224,196,159,.15);
+        border-left: 4px solid var(--primary-teal);
+        border-radius: 10px;
+        color: var(--text-dark);
+    }
+
+    .reply-item {
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 12px;
+        background: var(--light-bg);
+        border: 1px solid var(--border-color);
+    }
+
+        .reply-item small {
+            color: var(--text-light);
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        margin-top: 8px;
+        transition: .3s;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary-teal);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(181,136,94,.15);
+        }
+
+    .btn-send {
+        margin-top: 15px;
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary-teal));
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+        }
+
+    .badge-status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .pending {
+        background: #FFF3CD;
+        color: #856404;
+    }
+
+    .answered {
+        background: #D4EDDA;
+        color: #155724;
+    }
+
+    @@media(max-width: 900px) {
+        .reply-container {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Reply Inquiry</h1>
+        <p class="page-subtitle">View details and respond to customer message</p>
+    </div>
+</div>
+
+<div class="reply-container">
+
+    <!-- LEFT: Inquiry Info -->
+    <div class="info-card">
+
+        <div class="card-header">
+            Inquiry Details
+        </div>
+
+        <div class="card-body">
+
+            <div class="info-row">
+                <strong>Name:</strong> @Model.Name
+            </div>
+
+            <div class="info-row">
+                <strong>Email:</strong> @Model.Email
+            </div>
+
+            <div class="info-row">
+                <strong>Phone:</strong> @Model.PhoneNumber
+            </div>
+
+            <div class="info-row">
+                <strong>Event:</strong> @Model.EventType?.Name
+            </div>
+
+            <div class="info-row">
+                <strong>Guests:</strong> @Model.GuestCount
+            </div>
+
+            <div class="info-row">
+                <strong>Status:</strong>
+
+                @if (Model.Status == "Answered")
+                {
+                    <span class="badge-status answered">Answered</span>
+                }
+                else
+                {
+                    <span class="badge-status pending">Pending</span>
+                }
+            </div>
+
+            <div class="message-box">
+                @Model.Message
+            </div>
+
+        </div>
+    </div>
+
+    <!-- RIGHT: Reply Section -->
+    <div class="reply-card">
+
+        <div class="card-header">
+            Send Reply
+        </div>
+
+        <div class="card-body">
+
+            <h4 style="color:var(--primary-dark); margin-bottom:10px;">
+                Previous Replies
+            </h4>
+
+            @if (Model.InquiryReplies != null && Model.InquiryReplies.Any())
+            {
+                foreach (var reply in Model.InquiryReplies)
+                {
+                    <div class="reply-item">
+                        <strong>@reply.RepliedBy</strong><br />
+                        @reply.ReplyMessage<br />
+                        <small>@reply.RepliedAt</small>
+                    </div>
+                }
+            }
+            else
+            {
+                <p style="color:var(--text-light);">No replies yet.</p>
+            }
+
+            <hr />
+
+            <form method="post">
+
+                <input type="hidden" name="inquiryId" value="@Model.InquiryId" />
+
+                <label>Reply Message</label>
+                <textarea name="replyMessage" rows="5" class="form-control" required></textarea>
+
+                <button type="submit" class="btn-send">
+                    Send Reply
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

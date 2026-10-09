@@ -1,0 +1,239 @@
+@model IEnumerable<EventMVC.Models.EventType>
+
+@{
+    ViewData["Title"] = "Create Custom Event - Elite Events";
+}
+
+<style>
+    .custom-event-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(43, 20, 8, 0.12);
+        overflow: hidden;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .custom-event-header {
+        background: linear-gradient(135deg, #2B1408 0%, #452816 100%);
+        color: #F5EFE1;
+        padding: 2rem;
+    }
+
+    .custom-event-header h1 {
+        color: #E0C49F;
+        font-size: 2rem;
+        margin: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .custom-event-header p {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .custom-event-body {
+        padding: 2.5rem;
+    }
+
+    .event-types-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .event-type-option {
+        border: 2px solid #E0C49F;
+        border-radius: 10px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        background: white;
+    }
+
+    .event-type-option:hover {
+        border-color: #734120;
+        box-shadow: 0 4px 12px rgba(43, 20, 8, 0.15);
+        transform: translateY(-3px);
+    }
+
+    .event-type-option.selected {
+        border-color: #734120;
+        background-color: #F5EFE1;
+    }
+
+    .event-type-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .event-type-name {
+        color: #2B1408;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .event-type-description {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .info-box {
+        background-color: #d1ecf1;
+        border: 1px solid #bee5eb;
+        border-radius: 5px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        color: #0c5460;
+    }
+
+    .action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .btn-proceed {
+        background-color: #734120;
+        color: white;
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .btn-proceed:hover {
+        background-color: #2B1408;
+        color: #E0C49F;
+    }
+
+    .btn-proceed:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .btn-cancel {
+        background-color: #E0C49F;
+        color: #2B1408;
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .btn-cancel:hover {
+        background-color: #F5EFE1;
+        color: #2B1408;
+        text-decoration: none;
+    }
+
+    .error-message {
+        color: #d32f2f;
+        text-align: center;
+        margin-top: 1rem;
+        display: none;
+    }
+
+    /*  (max-width: 768px) {
+        .event-types-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .action-buttons {
+            grid-template-columns: 1fr;
+        }
+
+        .custom-event-header h1 {
+            font-size: 1.5rem;
+        }
+    } */
+</style>
+
+<div class="custom-event-container">
+    <div class="custom-event-header">
+        <h1> Create Your Custom Event</h1>
+        <p>Select your event type and customize every detail</p>
+    </div>
+
+    <div class="custom-event-body">
+        <div class="info-box">
+            <strong>How it works:</strong> Select your event type, then customize your event by choosing menu items, decorations, add-ons, and other details.
+        </div>
+
+        <h3 style="color: #2B1408; margin-bottom: 1rem;">Step 1: Select Event Type</h3>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="event-types-grid">
+                @foreach (var eventType in Model)
+                {
+                    <div class="event-type-option" onclick="selectEventType(@eventType.EventTypeId, this)">
+                        <div class="event-type-icon">
+                            @switch (eventType.Name?.ToLower())
+                            {
+                                case "wedding": <text>💍</text> break;
+                                case "birthday": <text>🎂</text> break;
+                                case "conference": <text>🎤</text> break;
+                                case "corporate": <text>🏢</text> break;
+                                case "party": <text>🎉</text> break;
+                                default: <text>🎊</text> break;
+                            }
+                        </div>
+                        <div class="event-type-name">@eventType.Name</div>
+                        <div class="event-type-description">@eventType.Description</div>
+                    </div>
+                }
+            </div>
+        }
+
+        <div class="error-message" id="errorMessage">Please select an event type to continue</div>
+
+        <div class="action-buttons">
+            <button type="button" class="btn-proceed" id="proceedBtn" disabled onclick="proceedToCustomization()">
+                Next: Customize Event →
+            </button>
+            <a asp-controller="Home" asp-action="Index" class="btn-cancel">← Cancel</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedEventTypeId = null;
+
+    function selectEventType(eventTypeId, element) {
+        // Remove selected class from all options
+        document.querySelectorAll('.event-type-option').forEach(el => {
+            el.classList.remove('selected');
+        });
+
+        // Add selected class to clicked option
+        element.classList.add('selected');
+        selectedEventTypeId = eventTypeId;
+
+        // Enable proceed button
+        document.getElementById('proceedBtn').disabled = false;
+        document.getElementById('errorMessage').style.display = 'none';
+    }
+
+    function proceedToCustomization() {
+        if (!selectedEventTypeId) {
+            document.getElementById('errorMessage').style.display = 'block';
+            return;
+        }
+
+        // Redirect to customization page
+        window.location.href = `/EventBookings/CustomizeEvent?eventTypeId=${selectedEventTypeId}`;
+    }
+</script>

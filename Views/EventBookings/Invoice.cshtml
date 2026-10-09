@@ -1,0 +1,441 @@
+
+@model EventMVC.Models.EventBooking
+
+@{
+    ViewData["Title"] = "Invoice";
+
+}
+
+
+<style>
+    body {
+        background: #f6f7fb;
+    }
+
+    .invoice-wrapper {
+        max-width: 1100px;
+        margin: 30px auto;
+    }
+
+    .invoice-card {
+        background: #fff;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+
+    .invoice-header {
+        background: linear-gradient(135deg,#2B1408,#5b331d);
+        color: white;
+        padding: 35px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .brand-title {
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    .invoice-no {
+        opacity: .9;
+    }
+
+    .print-btn {
+        background: #E0C49F;
+        color: #2B1408;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .invoice-body {
+        padding: 30px;
+    }
+
+    .top-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .info-card {
+        border: 1px solid #eee;
+        border-radius: 14px;
+        padding: 20px;
+    }
+
+        .info-card h4 {
+            margin-bottom: 15px;
+            color: #2B1408;
+        }
+
+    .info-row {
+        margin-bottom: 10px;
+    }
+
+    .event-banner {
+        background: #faf6ef;
+        border-left: 5px solid #c39a6b;
+        padding: 18px;
+        border-radius: 12px;
+        margin: 20px 0;
+    }
+
+    .section-title {
+        margin: 20px 0 10px;
+        font-size: 20px;
+        font-weight: 700;
+        color: #2B1408;
+    }
+
+    .item-card {
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+
+    .item-name {
+        font-weight: 600;
+        color: #2B1408;
+    }
+
+    .item-price {
+        margin-top: 6px;
+        color: #734120;
+        font-weight: 700;
+    }
+
+    .summary-box {
+        margin-top: 25px;
+        background: #faf6ef;
+        border-radius: 15px;
+        padding: 20px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .grand-total {
+        border-top: 2px solid #d5b48a;
+        margin-top: 15px;
+        padding-top: 15px;
+        font-size: 22px;
+        font-weight: 700;
+        color: #2B1408;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .approved {
+        background: #d4edda;
+        color: #155724;
+    }
+
+    .pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .rejected {
+        background: #f8d7da;
+        color: #721c24;
+    }
+
+    .actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 12px;
+    }
+
+    .back-btn {
+        background: #E0C49F;
+        color: #2B1408;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    @@media(max-width:768px) {
+        .top-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .invoice-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    @@media print {
+        .print-btn, .actions {
+            display: none !important;
+        }
+
+        body {
+            background: white;
+        }
+
+        .invoice-card {
+            box-shadow: none;
+        }
+    }
+
+    .included-box {
+        background: #faf6ef;
+        border: 1px solid #eadcc8;
+        border-radius: 15px;
+        padding: 20px;
+        margin-top: 10px;
+    }
+
+    .included-group {
+        margin-bottom: 15px;
+    }
+
+    .included-title {
+        font-weight: 700;
+        color: #2B1408;
+        margin-bottom: 10px;
+        font-size: 15px;
+    }
+
+    .chip-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .chip {
+        background: white;
+        border: 1px solid #e3d2b8;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        color: #5a3a1f;
+        max-width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    @@media print {
+        .section,
+        .included-box,
+        .item-card,
+        .summary-box {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+        /* Prevent table/blocks splitting */
+        tr, td, th {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+        /* Force proper spacing between blocks */
+        .section {
+            margin-bottom: 15px;
+        }
+        /* Hide site layout elements */
+        header,
+        footer,
+        nav,
+        .navbar,
+        .sidebar {
+            display: none !important;
+        }
+        /* Remove browser URL/footer behavior (best effort) */
+        @@page {
+            margin: 10mm;
+        }
+
+        body {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            background: white !important;
+        }
+
+        .invoice-wrapper,
+        .invoice-card {
+            box-shadow: none !important;
+        }
+    }
+</style>
+
+<div class="invoice-wrapper">
+
+    <div class="invoice-card">
+
+        <!-- HEADER -->
+        <div class="invoice-header">
+            <div>
+                <div class="brand-title">The Roastery</div>
+                <div class="invoice-no">Invoice #@Model.BookingId</div>
+                <div>@DateTime.Now.ToString("dd MMM yyyy")</div>
+            </div>
+
+            <button class="print-btn" onclick="window.print()">Print Invoice</button>
+        </div>
+
+        <div class="invoice-body">
+
+            <!-- STATUS -->
+            <div style="margin-bottom:15px;">
+                <span class="status @(Model.BookingStatus?.ToLower())">
+                    @Model.BookingStatus
+                </span>
+            </div>
+
+            <!-- TOP INFO -->
+            <div class="top-grid">
+                <div class="info-card">
+                    <h4>Customer</h4>
+                    <div class="info-row"><strong>Name:</strong> @Model.User?.UserName</div>
+                    <div class="info-row"><strong>Email:</strong> @Model.User?.Email</div>
+                    <div class="info-row"><strong>Phone:</strong> @Model.User?.PhoneNumber</div>
+                </div>
+
+                <div class="info-card">
+                    <h4>Event</h4>
+                    <div class="info-row"><strong>Type:</strong> @Model.EventType?.Name</div>
+                    <div class="info-row"><strong>Guests:</strong> @Model.GuestCount</div>
+                    <div class="info-row"><strong>Mode:</strong> @Model.BookingMode</div>
+                    <div class="info-row"><strong>Area:</strong> @Model.Area?.AreaName</div>
+                </div>
+
+            </div>
+
+            <!-- EVENT BANNER -->
+            <div class="event-banner">
+                <strong>Date:</strong> @Model.EventDate.ToString("dd MMM yyyy")
+                &nbsp; | &nbsp;
+                <strong>Time:</strong> @Model.StartTime - @Model.EndTime
+            </div>
+
+            <!-- PACKAGE -->
+            @if (Model.Package != null)
+            {
+                <div>
+                    <div class="section-title">Package</div>
+
+                    <div class="item-card">
+                        <div class="item-name">@Model.Package.PackageName</div>
+                        <div>@Model.Package.Description</div>
+                        <div class="item-price">
+                            ₹@(Model.Package.PricePerGuest* Model.GuestCount)
+                        </div>
+                    </div>
+                </div>
+            }
+            @if ((Model.Package != null) ||
+                        (Model.BookingMenuItems != null && Model.BookingMenuItems.Any()) ||
+                        (Model.BookingDecorations != null && Model.BookingDecorations.Any()) ||
+                        (Model.BookingAddOns != null && Model.BookingAddOns.Any()))
+            {
+                <div style="margin-top:25px;">
+                    <div class="section-title">What's Included</div>
+
+                    <div class="included-box">
+
+                        @* ================= PACKAGE BOOKING ================= *@
+                        @if (Model.Package != null)
+                        {
+                            <div class="included-group">
+                                <div class="included-title">🎁 Package Items - @Model.Package.PackageName</div>
+
+                                <div class="chip-container">
+
+                                    @foreach (var item in Model.Package.PackageMenuItems ?? new List<EventMVC.Models.PackageMenuItem>())
+                                    {
+                                        <span class="chip">@item.MenuItem.ItemName</span>
+                                    }
+
+                                    @foreach (var item in Model.Package.PackageDecorations ?? new List<EventMVC.Models.PackageDecoration>())
+                                    {
+                                        <span class="chip">@item.Decoration.DecorationName</span>
+                                    }
+
+                                    @foreach (var item in Model.Package.PackageAddOns ?? new List<EventMVC.Models.PackageAddOn>())
+                                    {
+                                        <span class="chip">@item.AddOn.AddOnName</span>
+                                    }
+
+                                </div>
+                            </div>
+                        }
+
+                        @* ================= CUSTOM BOOKING ================= *@
+                        @if (Model.Package == null)
+                        {
+                            <div class="included-group">
+                                <div class="included-title">🛠 Custom Booking Items</div>
+
+                                <div class="chip-container">
+
+                                    @foreach (var item in Model.BookingMenuItems ?? new List<EventMVC.Models.BookingMenuItem>())
+                                    {
+                                        <span class="chip">@item.MenuItem.ItemName</span>
+                                    }
+
+                                    @foreach (var item in Model.BookingDecorations ?? new List<EventMVC.Models.BookingDecoration>())
+                                    {
+                                        <span class="chip">@item.Decoration.DecorationName</span>
+                                    }
+
+                                    @foreach (var item in Model.BookingAddOns ?? new List<EventMVC.Models.BookingAddOn>())
+                                    {
+                                        <span class="chip">@item.AddOn.AddOnName</span>
+                                    }
+
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            }
+            <!-- SUMMARY -->
+            <div class="summary-box">
+
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <strong>₹@Model.SubTotalAmount.ToString("N2")</strong>
+                </div>
+
+                <div class="summary-row">
+                    <span>Tax</span>
+                    <strong>₹@Model.TaxAmount.ToString("N2")</strong>
+                </div>
+
+                <div class="summary-row grand-total">
+                    <span>Total</span>
+                    <span>₹@Model.TotalAmount.ToString("N2")</span>
+                </div>
+
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="actions">
+                <button class="print-btn" onclick="window.print()">Print</button>
+                <a href="javascript:history.back()" class="back-btn">Back</a>
+            </div>
+
+        </div>
+    </div>
+</div>

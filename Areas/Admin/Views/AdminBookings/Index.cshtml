@@ -1,0 +1,142 @@
+﻿
+
+@model IEnumerable<EventMVC.Models.EventBooking>
+
+@{
+    ViewData["Title"] = "Manage Bookings";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Manage Event Bookings</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <table class="table table-bordered table-hover align-middle">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Booking ID</th>
+                <th>User</th>
+                <th>Event</th>
+                <th>Package</th>
+                <th>Mode</th>
+                <th>Date</th>
+                <th>Guests</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th width="180">Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.BookingId</td>
+
+                    <td>@item.User?.UserName</td>
+                    <td>@item.EventType?.Name</td>
+
+                    <td>
+                        @(item.Package != null
+                                            ? item.Package.PackageName
+                                            : "Custom Event")
+                    </td>
+
+                    <td>@item.BookingMode</td>
+
+                    <td>@item.EventDate</td>
+
+                    <td>@item.GuestCount</td>
+
+                    <td>₹@item.TotalAmount</td>
+
+                    <td>
+
+                        @if (item.BookingStatus == "Pending")
+                        {
+                            <span class="badge bg-warning text-dark">
+                                Pending
+                            </span>
+                        }
+                        else if (item.BookingStatus == "Approved")
+                        {
+                            <span class="badge bg-success">
+                                Approved
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">
+                                Rejected
+                            </span>
+                        }
+
+                    </td>
+
+                    <td>
+
+                        @if (item.BookingStatus == "Pending")
+                        {
+                            <form action="/Admin/AdminBookings/Approve"
+                                  method="post"
+                                  style="display:inline;">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@item.BookingId" />
+
+                                <button type="submit"
+                                        class="btn btn-success btn-sm">
+                                    Approve
+                                </button>
+                            </form>
+
+                            <form action="/Admin/AdminBookings/Reject"
+                                  method="post"
+                                  style="display:inline;">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@item.BookingId" />
+
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm">
+                                    Reject
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-muted">
+                                No Actions
+                            </span>
+                        }
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

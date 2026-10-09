@@ -1,0 +1,114 @@
+@model IEnumerable<EventMVC.Models.EventType>
+
+@{
+    ViewData["Title"] = "Event Types";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .search-bar {
+        background: var(--white);
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        display: flex;
+        gap: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 10px 16px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .item-image {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+    }
+</style>
+
+<div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <span class="breadcrumb-item"><a href="/" style="color: var(--text-light); text-decoration: none;">Home</a></span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">Event Types</span>
+    </div>
+</div>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title"> Event Types Management</h1>
+    </div>
+    <div class="page-actions">
+        <a href="@Url.Action("Create")" class="btn btn-primary">
+            <span></span> Add Event Type
+        </a>
+    </div>
+</div>
+
+
+
+<div class="table-container">
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Image</th>
+                    <th style="width: 25%;">Name</th>
+                    <th style="width: 40%;">Description</th>
+                    <th style="width: 15%;">Status</th>
+                    <th style="width: 10%;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.ImageUrl"
+                                 alt="@item.Name"
+                                 class="item-image" />
+                        </td>
+                        <td>
+                            <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @if (item.IsActive)
+                            {
+                                <span class="badge badge-active">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-inactive">Inactive</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="@Url.Action("Edit", new { id = item.EventTypeId })" class="action-btn action-btn-edit" title="Edit">EDIT</a>
+                                <a href="@Url.Action("Delete", new { id = item.EventTypeId })" class="action-btn action-btn-delete" title="Delete" onclick="return confirm('Are you sure?')">DELETE</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-state-title">No Event Types Found</div>
+            <p>Start by creating your first event type.</p>
+            <a href="@Url.Action("Create")" class="btn btn-primary" style="margin-top: 16px;">Create Event Type</a>
+        </div>
+    }
+</div>

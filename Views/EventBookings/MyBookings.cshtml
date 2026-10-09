@@ -1,0 +1,292 @@
+@model IEnumerable<EventMVC.Models.EventBooking>
+
+@{
+    ViewData["Title"] = "My Bookings - Elite Events";
+}
+
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #2B1408 0%, #452816 100%);
+        color: #F5EFE1;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+        color: #E0C49F;
+        font-size: 2rem;
+        margin: 0;
+    }
+
+    .bookings-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(43, 20, 8, 0.12);
+        overflow: hidden;
+    }
+
+    .bookings-list {
+        padding: 2rem;
+    }
+
+    .booking-card {
+        border: 2px solid #E0C49F;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+        background: white;
+        display: grid;
+        grid-template-columns: 1fr 200px;
+        gap: 2rem;
+    }
+
+    .booking-card:hover {
+        border-color: #734120;
+        box-shadow: 0 4px 12px rgba(43, 20, 8, 0.15);
+    }
+
+    .booking-info h3 {
+        color: #2B1408;
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .booking-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .detail-item {
+        color: #666;
+        font-size: 0.95rem;
+    }
+
+    .detail-item strong {
+        color: #2B1408;
+        display: inline-block;
+        width: 100px;
+    }
+
+    .booking-status {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.85rem;
+    }
+
+    .status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .status-confirmed {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .status-completed {
+        background-color: #cce5ff;
+        color: #004085;
+    }
+
+    .booking-mode {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 0.85rem;
+        background-color: #E0C49F;
+        color: #2B1408;
+    }
+
+    .booking-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .btn-view {
+        background-color: #734120;
+        color: white;
+        padding: 0.6rem 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .btn-view:hover {
+        background-color: #2B1408;
+        color: #E0C49F;
+        text-decoration: none;
+    }
+
+    .btn-invoice {
+        background-color: #E0C49F;
+        color: #2B1408;
+        padding: 0.6rem 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .btn-invoice:hover {
+        background-color: #F5EFE1;
+        color: #2B1408;
+        text-decoration: none;
+    }
+
+    .no-bookings {
+        text-align: center;
+        padding: 3rem;
+        color: #666;
+    }
+
+    .no-bookings h3 {
+        color: #2B1408;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .cta-section {
+        background-color: #F5EFE1;
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .cta-section h4 {
+        color: #2B1408;
+        margin-bottom: 1rem;
+    }
+
+    .cta-button {
+        background-color: #734120;
+        color: white;
+        padding: 0.8rem 2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .cta-button:hover {
+        background-color: #2B1408;
+        color: #E0C49F;
+        text-decoration: none;
+    }
+
+   
+</style>
+
+<div class="page-header">
+    <h1>My Bookings</h1>
+    <p style="margin: 0.5rem 0 0 0; color: #F5EFE1;">View all your event bookings and invoices</p>
+</div>
+
+<div class="bookings-container">
+    <div class="bookings-list">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var booking in Model)
+            {
+                <div class="booking-card">
+                    <div class="booking-info">
+                        <h3>@(booking.Package?.PackageName ?? "Custom Event") - @booking.EventType?.Name</h3>
+                        
+                        <div class="booking-details">
+                            <div class="detail-item">
+                                <strong> Date:</strong> @booking.EventDate.ToString("dd MMMM, yyyy")
+                            </div>
+                            <div class="detail-item">
+                                <strong> Guests:</strong> @booking.GuestCount Person(s)
+                            </div>
+                            <div class="detail-item">
+                                <strong> Area:</strong> @booking.Area?.AreaName
+                            </div>
+                            <div class="detail-item">
+                                <strong> Time:</strong> @booking.StartTime.ToString("HH:mm") - @booking.EndTime.ToString("HH:mm")
+                            </div>
+                        </div>
+
+                        <div class="booking-status">
+                            <span class="status-badge status-@booking.BookingStatus.ToLower()">@booking.BookingStatus</span>
+                            <span class="booking-mode">@booking.BookingMode</span>
+                        </div>
+                    </div>
+
+                    <div class="booking-actions">
+
+                        @if (booking.BookingStatus == "Approved")
+                        {
+                            <a asp-action="Invoice"
+                               asp-route-bookingId="@booking.BookingId"
+                               class="btn-invoice">
+                                 View Invoice
+                            </a>
+                        }
+                        else if (booking.BookingStatus == "Pending")
+                        {
+                            <div class="pending-box">
+                                 Waiting For Approval
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="rejected-box">
+                                 Booking Rejected
+                            </div>
+                        }
+
+                        <div class="booking-price">
+                            ₹@booking.TotalAmount.ToString("F2")
+                        </div>
+
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="no-bookings">
+                <h3>No Bookings Yet</h3>
+                <p>You haven't made any bookings yet. Let's create your first event!</p>
+
+                <div class="cta-section">
+                    <h4>Ready to Book Your Event?</h4>
+                    <a asp-controller="EventTypes" asp-action="Index" class="cta-button">
+                        Browse Event Packages
+                    </a>
+                    <span style="color: #666; margin: 0 1rem;"> or </span>
+                    <a asp-action="CustomEvent" class="cta-button">
+                        Create Custom Event
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

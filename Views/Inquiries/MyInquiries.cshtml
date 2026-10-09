@@ -1,0 +1,58 @@
+﻿@model IEnumerable<EventMVC.Models.Inquiry>
+
+<h2>My Inquiries</h2>
+
+@foreach (var inquiry in Model)
+{
+    <div class="card mb-4">
+
+        <div class="card-header">
+
+            <strong>
+                @inquiry.EventType?.Name
+            </strong>
+
+            -
+
+            @inquiry.Status
+
+        </div>
+
+        <div class="card-body">
+
+            <p>
+                <strong>Your Message:</strong>
+            </p>
+
+            <div class="alert alert-secondary">
+                @inquiry.Message
+            </div>
+
+            <h5>Admin Replies</h5>
+
+            @if (inquiry.InquiryReplies.Any())
+            {
+                foreach (var reply in inquiry.InquiryReplies)
+                {
+                    <div class="alert alert-success">
+
+                        @reply.ReplyMessage
+
+                        <br />
+
+                        <small>
+                            @reply.RepliedAt
+                        </small>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No reply yet.</p>
+            }
+
+        </div>
+
+    </div>
+}

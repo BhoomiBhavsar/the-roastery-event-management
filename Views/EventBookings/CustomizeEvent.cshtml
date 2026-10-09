@@ -1,0 +1,1015 @@
+@model EventMVC.Models.EventType
+
+@{
+    ViewData["Title"] = "Customize " + Model.Name ;
+   
+
+}
+
+<style>
+
+    body {
+        background: #f8f5f1;
+    }
+
+    .custom-page {
+        width: 96%;
+        max-width: 1800px;
+        margin: 30px auto;
+    }
+
+    .custom-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 30px;
+        align-items: start;
+    }
+
+    /* LEFT CONTENT */
+
+    .custom-left {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .hero-section {
+        position: relative;
+        border-radius: 24px;
+        overflow: hidden;
+        min-height: 360px;
+        background: #2B1408;
+        box-shadow: 0 15px 40px rgba(43,20,8,0.15);
+    }
+
+    .hero-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.55);
+    }
+
+    .hero-overlay {
+        position: relative;
+        z-index: 2;
+        padding: 60px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        min-height: 360px;
+        background: linear-gradient(to right, rgba(0,0,0,0.65), rgba(0,0,0,0.25));
+    }
+
+    .hero-badge {
+        width: fit-content;
+        padding: 10px 18px;
+        border-radius: 50px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(8px);
+        color: #E0C49F;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-size: 52px;
+        font-weight: 800;
+        margin-bottom: 16px;
+        line-height: 1.1;
+    }
+
+    .hero-text {
+        width: 70%;
+        color: rgba(255,255,255,0.9);
+        line-height: 1.8;
+        font-size: 16px;
+    }
+
+    /* EVENT DETAILS */
+
+    .section-box {
+        background: white;
+        border-radius: 24px;
+        padding: 35px;
+        box-shadow: 0 10px 30px rgba(43,20,8,0.08);
+    }
+
+    .section-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #2B1408;
+        margin-bottom: 28px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 10px;
+        color: #2B1408;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 16px;
+        border-radius: 14px;
+        border: 1px solid #ddd;
+        background: #fafafa;
+        transition: 0.3s ease;
+        font-size: 15px;
+    }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #734126;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(115,65,38,0.08);
+        }
+
+    /* MENU CATEGORY */
+
+    .category-block {
+        margin-bottom: 40px;
+    }
+
+    .category-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 24px;
+        font-weight: 800;
+        color: #2B1408;
+        margin-bottom: 25px;
+    }
+
+    .category-line {
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(to right, #734126, transparent);
+    }
+
+    /* CARDS */
+
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+
+    .selection-card {
+        background: white;
+        border-radius: 22px;
+        overflow: hidden;
+        border: 2px solid transparent;
+        box-shadow: 0 10px 30px rgba(43,20,8,0.08);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+        .selection-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 35px rgba(43,20,8,0.14);
+        }
+
+        .selection-card.selected {
+            border-color: #734126;
+            background: #fffdf9;
+        }
+
+    .card-image {
+        height: 220px;
+        width: 100%;
+        overflow: hidden;
+        background: #f3eee8;
+    }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .card-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        background: linear-gradient(135deg,#E0C49F,#734126);
+    }
+
+    .card-body {
+        padding: 24px;
+    }
+
+    .card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 14px;
+    }
+
+    .card-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: #2B1408;
+        line-height: 1.3;
+    }
+
+    .card-check {
+        width: 24px;
+        height: 24px;
+        accent-color: #734126;
+        cursor: pointer;
+    }
+
+    .card-desc {
+        color: #777;
+        line-height: 1.7;
+        margin-bottom: 18px;
+        min-height: 44px;
+    }
+
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-price {
+        color: #734126;
+        font-size: 22px;
+        font-weight: 800;
+    }
+
+    .card-tag {
+        padding: 7px 14px;
+        border-radius: 30px;
+        background: #f3eee8;
+        color: #734126;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    /* RIGHT SUMMARY */
+
+    .summary-panel {
+        position: sticky;
+        top: 25px;
+        background: white;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 12px 35px rgba(43,20,8,0.12);
+    }
+
+    .summary-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #2B1408;
+        margin-bottom: 25px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        color: #666;
+        font-size: 15px;
+    }
+
+        .summary-row span:last-child {
+            color: #734126;
+            font-weight: 700;
+        }
+
+    .summary-total {
+        margin-top: 25px;
+        padding-top: 22px;
+        border-top: 2px dashed #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .summary-total h2 {
+            margin: 0;
+            color: #2B1408;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .summary-total p {
+            margin: 0;
+            color: #777;
+            font-size: 14px;
+        }
+
+    .alert-danger {
+        background: #fff3f3;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+        border-radius: 14px;
+        padding: 16px 20px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .action-buttons {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .btn-book {
+        background: linear-gradient(135deg,#452816,#734126);
+        color: white;
+        border: none;
+        padding: 18px;
+        border-radius: 16px;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+        .btn-book:hover {
+            transform: translateY(-2px);
+        }
+
+    .btn-back {
+        text-align: center;
+        text-decoration: none;
+        background: #f3eee8;
+        color: #2B1408;
+        padding: 18px;
+        border-radius: 16px;
+        font-weight: 700;
+    }
+</style>
+<div id="validationError"></div>
+<form id="customizationForm" method="post" asp-action="SaveCustomBooking">
+
+
+    <input type="hidden" name="eventTypeId" value="@ViewBag.EventTypeId">
+    <input type="hidden" id="selectedMenuItems" name="selectedMenuItems">
+    <input type="hidden" id="selectedDecorations" name="selectedDecorations">
+    <input type="hidden" id="selectedAddOns" name="selectedAddOns">
+
+    <div class="custom-page">
+
+        <div class="custom-wrapper">
+
+            <!-- LEFT SIDE -->
+            <div class="custom-left">
+
+                <!-- HERO -->
+                <div class="hero-section">
+
+                    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" class="hero-image" />
+                    }
+
+                    <div class="hero-overlay">
+
+                        <div class="hero-badge">
+                            The Roastery Experience
+                        </div>
+
+                        <div class="hero-title">
+                            Customize Your @Model.Name
+                        </div>
+
+                        <div class="hero-text">
+                            Select menu items, premium decorations and event add-ons to create your perfect celebration experience.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- EVENT DETAILS -->
+                <div class="section-box">
+
+                    <div class="section-title">
+                        Event Details
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label>Event Date</label>
+                            <input type="date"
+                                   id="eventDate"
+                                   name="eventDate"
+                                   class="form-control"
+                                   min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")"
+                                   required
+                                   onchange="calculateCost()" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Guests</label>
+                            <input type="number"
+                                   id="guestCount"
+                                   name="guestCount"
+                                   class="form-control"
+                                   min="1"
+                                   placeholder="Enter guest count"
+                                   required
+                                   onchange="calculateCost()" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Start Time</label>
+                            <input type="time"
+                                   id="startTime"
+                                   name="startTime"
+                                   class="form-control"
+                                   required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>End Time</label>
+                            <input type="time"
+                                   id="endTime"
+                                   name="endTime"
+                                   class="form-control"
+                                   required />
+                        </div>
+
+                    </div>
+
+                    <div class="form-group" style="margin-top:22px;">
+
+                        <label>Select Area</label>
+
+                        <select id="areaId"
+                                name="areaId"
+                                class="form-control"
+                                required
+                                onchange="calculateCost()">
+
+                            <option value="">-- Select Area --</option>
+
+                            @foreach (var area in ViewBag.Areas)
+                            {
+                                <option value="@area.AreaId"
+                                        data-price="@area.PricePerGuest"
+                                        data-capacity="@area.Capacity">
+                                    @area.AreaName - ₹@area.PricePerGuest/Guest (Capacity: @area.Capacity)
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <!-- MENU ITEMS -->
+                @if (ViewBag.MenuItems != null && ViewBag.MenuItems.Count > 0)
+                {
+                    var groupedMenuItems = ((IEnumerable<dynamic>)ViewBag.MenuItems)
+                    .GroupBy(x => (string)x.Category);
+
+                    <div class="section-box">
+
+                        @foreach (var category in groupedMenuItems)
+                        {
+                            <div class="category-block">
+
+                                <div class="category-title">
+                                    🍽️ @category.Key
+                                    <div class="category-line"></div>
+                                </div>
+
+                                <div class="cards-grid">
+
+                                    @foreach (var item in category)
+                                    {
+                                        <div class="selection-card"
+                                             onclick="toggleItem(this,'menuItem',@item.MenuItemId)">
+
+                                            <div class="card-image">
+
+                                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                                {
+                                                    <img src="@item.ImageUrl" />
+                                                }
+                                                else
+                                                {
+                                                    <div class="card-placeholder">
+                                                        🍽️
+                                                    </div>
+                                                }
+
+                                            </div>
+
+                                            <div class="card-body">
+
+                                                <div class="card-top">
+
+                                                    <div class="card-title">
+                                                        @item.ItemName
+                                                    </div>
+
+                                                    <input type="checkbox"
+                                                           class="menuItem-@item.MenuItemId card-check"
+                                                           value="@item.MenuItemId"
+                                                           onchange="calculateCost()" />
+
+                                                </div>
+
+                                                <div class="card-desc">
+                                                    Premium @item.Category selection
+                                                </div>
+
+                                                <div class="card-footer">
+
+                                                    <div class="card-price">
+                                                        ₹@item.Price
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+                }
+
+                <!-- DECORATIONS -->
+                @if (ViewBag.Decorations != null && ViewBag.Decorations.Count > 0)
+                {
+                    <div class="section-box">
+
+                        <div class="category-title">
+                            🎨 Decorations
+                            <div class="category-line"></div>
+                        </div>
+
+                        <div class="cards-grid">
+
+                            @foreach (var decoration in ViewBag.Decorations)
+                            {
+                                <div class="selection-card"
+                                     onclick="toggleItem(this,'decoration',@decoration.DecorationId)">
+
+                                    <div class="card-image">
+
+                                        @if (!string.IsNullOrEmpty(decoration.ImageUrl))
+                                        {
+                                            <img src="@decoration.ImageUrl" />
+                                        }
+                                        else
+                                        {
+                                            <div class="card-placeholder">
+                                                🎨
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                    <div class="card-body">
+
+                                        <div class="card-top">
+
+                                            <div class="card-title">
+                                                @decoration.DecorationName
+                                            </div>
+
+                                            <input type="checkbox"
+                                                   class="decoration-@decoration.DecorationId card-check"
+                                                   value="@decoration.DecorationId"
+                                                   onchange="calculateCost()" />
+
+                                        </div>
+
+                                        <div class="card-desc">
+                                            Premium decoration setup for elegant event experience.
+                                        </div>
+
+                                        <div class="card-footer">
+
+                                            <div class="card-price">
+                                                ₹@decoration.Price
+                                            </div>
+
+                                            <div class="card-tag">
+                                                One Time
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                }
+
+                <!-- ADDONS -->
+                @if (ViewBag.AddOns != null && ViewBag.AddOns.Count > 0)
+                {
+                    <div class="section-box">
+
+                        <div class="category-title">
+                            ✨ Add-ons
+                            <div class="category-line"></div>
+                        </div>
+
+                        <div class="cards-grid">
+
+                            @foreach (var addon in ViewBag.AddOns)
+                            {
+                                <div class="selection-card"
+                                     onclick="toggleItem(this,'addon',@addon.AddOnId)">
+
+                                    <div class="card-image">
+
+                                        @if (!string.IsNullOrEmpty(addon.ImageUrl))
+                                        {
+                                            <img src="@addon.ImageUrl" />
+                                        }
+                                        else
+                                        {
+                                            <div class="card-placeholder">
+                                                ✨
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                    <div class="card-body">
+
+                                        <div class="card-top">
+
+                                            <div class="card-title">
+                                                @addon.AddOnName
+                                            </div>
+
+                                            <input type="checkbox"
+                                                   class="addon-@addon.AddOnId card-check"
+                                                   value="@addon.AddOnId"
+                                                   onchange="calculateCost()" />
+
+                                        </div>
+
+                                        <div class="card-desc">
+                                            @addon.Description
+                                        </div>
+
+                                        <div class="card-footer">
+
+                                            <div class="card-price">
+                                                ₹@addon.Price
+                                            </div>
+
+                                            <div class="card-tag">
+                                                Add-on
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="summary-panel">
+
+                <div class="summary-title">
+                    Booking Summary
+                </div>
+
+                <div class="summary-row">
+                    <span>Menu Items</span>
+                    <span>₹<span id="menuCost">0</span></span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Decorations</span>
+                    <span>₹<span id="decorationCost">0</span></span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Add-ons</span>
+                    <span>₹<span id="addonCost">0</span></span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Area Cost</span>
+                    <span>₹<span id="areaCost">0</span></span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Tax (5%)</span>
+                    <span>₹<span id="tax">0</span></span>
+                </div>
+
+                <div class="summary-total">
+
+                    <div>
+                        <p>Total Amount</p>
+                        <h2>₹<span id="totalAmount">0</span></h2>
+                    </div>
+
+                </div>
+
+                <div class="action-buttons">
+
+                    <button type="submit" class="btn-book">
+                        ✓ Book Custom Event
+                    </button>
+
+                    <a href="javascript:history.back()" class="btn-back">
+                        ← Back
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+<script>
+
+    function toggleItem(element, type, itemId) {
+
+        if (event.target.type === "checkbox") {
+            element.classList.toggle('selected');
+            calculateCost();
+            return;
+        }
+
+        element.classList.toggle('selected');
+
+        let checkbox;
+
+        switch(type) {
+            case 'menuItem':
+                checkbox = element.querySelector('.menuItem-' + itemId);
+                break;
+            case 'decoration':
+                checkbox = element.querySelector('.decoration-' + itemId);
+                break;
+            case 'addon':
+                checkbox = element.querySelector('.addon-' + itemId);
+                break;
+        }
+
+        checkbox.checked = !checkbox.checked;
+
+        calculateCost();
+    }
+
+    function calculateCost() {
+
+        const guestCount =
+            parseInt(document.getElementById('guestCount').value) || 0;
+
+        const areaSelect =
+            document.getElementById('areaId');
+
+        const selectedOption =
+            areaSelect.options[areaSelect.selectedIndex];
+
+        const areaPrice =
+            parseFloat(selectedOption.getAttribute('data-price')) || 0;
+
+        let menuCost = 0;
+
+        document.querySelectorAll('input[class^="menuItem-"]:checked')
+            .forEach(checkbox => {
+
+                const parent = checkbox.closest('.selection-card');
+
+                const priceText =
+                    parent.querySelector('.card-price')
+                    .textContent.replace('₹', '');
+
+                menuCost += parseFloat(priceText) * guestCount;
+            });
+
+        let decorationCost = 0;
+
+        document.querySelectorAll('input[class^="decoration-"]:checked')
+            .forEach(checkbox => {
+
+                const parent = checkbox.closest('.selection-card');
+
+                const priceText =
+                    parent.querySelector('.card-price')
+                    .textContent.replace('₹', '');
+
+                decorationCost += parseFloat(priceText);
+            });
+
+        let addonCost = 0;
+
+        document.querySelectorAll('input[class^="addon-"]:checked')
+            .forEach(checkbox => {
+
+                const parent = checkbox.closest('.selection-card');
+
+                const priceText =
+                    parent.querySelector('.card-price')
+                    .textContent.replace('₹', '');
+
+                addonCost += parseFloat(priceText);
+            });
+
+        const areaCost = areaPrice * guestCount;
+
+        const subtotal =
+            menuCost + decorationCost + addonCost + areaCost;
+
+        const taxAmount = subtotal * 0.05;
+
+        const total = subtotal + taxAmount;
+
+        document.getElementById('menuCost').textContent =
+            menuCost.toFixed(2);
+
+        document.getElementById('decorationCost').textContent =
+            decorationCost.toFixed(2);
+
+        document.getElementById('addonCost').textContent =
+            addonCost.toFixed(2);
+
+        document.getElementById('areaCost').textContent =
+            areaCost.toFixed(2);
+
+        document.getElementById('tax').textContent =
+            taxAmount.toFixed(2);
+
+        document.getElementById('totalAmount').textContent =
+            total.toFixed(2);
+
+        updateHiddenFields();
+    }
+
+    function updateHiddenFields() {
+
+        const menuItems = [];
+
+        document.querySelectorAll('input[class^="menuItem-"]:checked')
+            .forEach(checkbox => {
+                menuItems.push(checkbox.value);
+            });
+
+        const decorations = [];
+
+        document.querySelectorAll('input[class^="decoration-"]:checked')
+            .forEach(checkbox => {
+                decorations.push(checkbox.value);
+            });
+
+        const addOns = [];
+
+        document.querySelectorAll('input[class^="addon-"]:checked')
+            .forEach(checkbox => {
+                addOns.push(checkbox.value);
+            });
+
+        document.getElementById('selectedMenuItems').value =
+            menuItems.join(',');
+
+        document.getElementById('selectedDecorations').value =
+            decorations.join(',');
+
+        document.getElementById('selectedAddOns').value =
+            addOns.join(',');
+    }
+        function showError(message) {
+
+        const container =
+            document.getElementById("validationError");
+
+        container.innerHTML =
+            `<div class="alert alert-danger">${message}</div>`;
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+    function clearError() {
+
+        document.getElementById("validationError").innerHTML = "";
+    }
+
+    function validateCapacity() {
+
+        const guestInput =
+            document.getElementById("guestCount");
+
+        const areaSelect =
+            document.getElementById("areaId");
+
+        const selectedOption =
+            areaSelect.options[areaSelect.selectedIndex];
+
+        if (!selectedOption.value)
+            return true;
+
+        const capacity =
+            parseInt(selectedOption.dataset.capacity) || 0;
+
+        const guests =
+            parseInt(guestInput.value) || 0;
+
+        if (guests > capacity) {
+
+            showError(
+                `Selected area capacity is only ${capacity} guests.`
+            );
+
+            return false;
+        }
+
+        return true;
+    }
+        document.getElementById("guestCount")
+        .addEventListener("input", function () {
+
+            clearError();
+            validateCapacity();
+    });
+
+    document.getElementById("areaId")
+        .addEventListener("change", function () {
+
+            clearError();
+            validateCapacity();
+    });
+
+    document.getElementById("customizationForm")
+        .addEventListener("submit", function (e) {
+
+            clearError();
+
+            const selectedMenus =
+                document.querySelectorAll(
+                    'input[class^="menuItem-"]:checked'
+                );
+
+            if (selectedMenus.length < 5) {
+
+                e.preventDefault();
+
+                showError(
+                    "Please select at least 5 menu items."
+                );
+
+                return false;
+            }
+
+            if (!validateCapacity()) {
+
+                e.preventDefault();
+                return false;
+            }
+
+            updateHiddenFields();
+
+            return true;
+    });
+</script>

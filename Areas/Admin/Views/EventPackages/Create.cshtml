@@ -1,0 +1,257 @@
+@model EventMVC.Models.EventPackage
+@using Microsoft.AspNetCore.Mvc.Rendering;
+
+
+@{
+    ViewData["Title"] = "Create Event Package";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .form-container {
+        max-width: 600px;
+    }
+
+    .form-card {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .form-actions .btn {
+        flex: 1;
+    }
+
+    .validation-message {
+        color: var(--danger);
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        pointer-events: none;
+    }
+
+    .form-control.with-icon {
+        padding-right: 45px;
+    }
+
+    .form-select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+
+    .form-select:focus {
+        outline: none;
+        border-color: var(--primary-teal);
+        box-shadow: 0 0 0 3px rgba(15, 164, 175, 0.1);
+    }
+</style>
+
+<div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <span class="breadcrumb-item"><a href="/" style="color: var(--text-light); text-decoration: none;">Home</a></span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item"><a href="/Admin/EventPackages" style="color: var(--text-light); text-decoration: none;">Event Packages</a></span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">Create</span>
+    </div>
+</div>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title"> Create New Event Package</h1>
+    </div>
+</div>
+
+<div class="form-container">
+    <div class="form-card">
+
+        <form asp-action="Create" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="All"></div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Package Name *
+                </label>
+
+                <div class="input-group">
+
+                    <input type="text"
+                           name="PackageName"
+                           id="PackageName"
+                           class="form-control with-icon"
+                           placeholder="e.g., Silver Birthday Package, Premium Wedding Package">
+
+
+                </div>
+
+                <span asp-validation-for="PackageName"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Event Type *
+                </label>
+
+                <select name="EventTypeId"
+                        id="EventTypeId"
+                        class="form-select">
+
+                    <option value="">
+                        -- Select Event Type --
+                    </option>
+
+                    @foreach (SelectListItem item in ViewBag.EventTypeList)
+                    {
+                        <option value="@item.Value">
+                            @item.Text
+                        </option>
+                    }
+
+                </select>
+
+            </div>
+            <div class="form-group">
+
+                <label class="form-label">
+                    Description
+                </label>
+
+                <textarea name="Description"
+                          id="Description"
+                          class="form-control"
+                          rows="4"
+                          placeholder="Provide a detailed description of this package..."></textarea>
+
+                <span asp-validation-for="Description"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Price Per Guest 
+                </label>
+
+                <div class="input-group">
+
+                    <input type="number"
+                           name="PricePerGuest"
+                           id="PricePerGuest"
+                           class="form-control with-icon"
+                           placeholder="e.g., 1500"
+                           min="0"
+                           step="0.01">
+
+
+                </div>
+
+                <span asp-validation-for="PricePerGuest"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Image URL
+                </label>
+
+                <div class="input-group">
+
+                    <input type="text"
+                           name="ImageUrl"
+                           id="ImageUrl"
+                           class="form-control with-icon"
+                           placeholder="https://example.com/image.jpg">
+
+
+                </div>
+
+                <span asp-validation-for="ImageUrl"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+
+                   
+                    <input type="checkbox"
+                           name="IsActive"
+                           value="true"
+                           style="margin-right: 8px; cursor: pointer;" />
+                    <input type="hidden"
+                           name="IsActive"
+                           value="false" />
+
+                    Active Status
+
+                </label>
+
+                <p style="color: var(--text-light); font-size: 12px; margin-top: 6px;">
+                    Enable this package for booking
+                </p>
+
+            </div>
+
+            <div class="form-actions">
+
+                <a href="@Url.Action("Index")"
+                   class="btn btn-secondary">
+
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                     Create Package
+                </button>
+
+            </div>
+
+        </form>
+
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,147 @@
+@model IEnumerable<EventMVC.Models.EventType>
+
+@{
+    ViewData["Title"] = "Event Types - Elite Events";
+}
+
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #2B1408 0%, #452816 100%);
+        color: #F5EFE1;
+        padding: 3rem 0;
+        border-radius: 10px;
+        margin-bottom: 3rem;
+        text-align: center;
+    }
+
+    .page-header h1 {
+        color: #E0C49F;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .event-type-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2.5rem;
+        margin-top: 2rem;
+    }
+
+    .event-type-card {
+        border: 2px solid #E0C49F;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: white;
+        box-shadow: 0 4px 12px rgba(43, 20, 8, 0.1);
+    }
+
+    .event-type-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 30px rgba(43, 20, 8, 0.2);
+        border-color: #734120;
+    }
+
+    .event-type-image {
+        height: 300px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #E0C49F 0%, #734120 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+    }
+
+    .event-type-content {
+        padding: 2rem;
+    }
+
+    .event-type-name {
+        color: #2B1408;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .event-type-description {
+        color: #666;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .event-type-button {
+        background-color: #734120;
+        color: white;
+        padding: 0.8rem 2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        display: block;
+        width: 100%;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .event-type-button:hover {
+        background-color: #2B1408;
+        color: #E0C49F;
+        text-decoration: none;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 3rem;
+        color: #666;
+    }
+</style>
+
+<div class="page-header">
+    <h1>Our Event Types</h1>
+    <p>Choose from our wide variety of event categories</p>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="event-type-grid">
+        @foreach (var eventType in Model)
+        {
+            <div class="event-type-card">
+                @if (!string.IsNullOrEmpty(eventType.ImageUrl))
+                {
+                    <img src="@eventType.ImageUrl" class="event-type-image" alt="@eventType.Name">
+                }
+                else
+                {
+                    <div class="event-type-image">
+                        @switch (eventType.Name?.ToLower())
+                        {
+                            case "wedding": <text>💍</text> break;
+                            case "birthday": <text>🎂</text> break;
+                            case "conference": <text>🎤</text> break;
+                            case "corporate": <text>🏢</text> break;
+                            case "party": <text>🎉</text> break;
+                            default: <text>🎊</text> break;
+                        }
+                    </div>
+                }
+                <div class="event-type-content">
+                    <div class="event-type-name">@eventType.Name</div>
+                    <p class="event-type-description">@eventType.Description</p>
+                    <a asp-action="Packages" asp-route-id="@eventType.EventTypeId" class="event-type-button">
+                        View Packages →
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="no-results">
+        <h3>No Event Types Available</h3>
+        <p>Sorry, no event types are currently available. Please check back later.</p>
+    </div>
+}

@@ -1,0 +1,73 @@
+# Visual Studio files
+
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build output
+
+bin/
+obj/
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+
+# Visual Studio generated files
+
+*.cache
+*.pdb
+*.ilk
+*.log
+
+# User-specific settings
+
+*.csproj.user
+*.sln.ide
+
+# NuGet packages
+
+*.nupkg
+packages/
+
+# Local configuration and secrets
+
+appsettings.Local.json
+appsettings.*.Local.json
+secrets.json
+
+# Environment variables
+
+.env
+.env.*
+
+# Operating system files
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Test results
+
+TestResults/
+*.trx
+
+# Publish output
+
+publish/
+artifacts/
+
+# Docker overrides
+
+docker-compose.override.yml
+
+# Temporary files
+
+*.tmp
+*.temp
+*.bak

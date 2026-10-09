@@ -1,0 +1,390 @@
+﻿@{
+    ViewData["Title"] = "Edit Package Inclusions";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var package = ViewBag.Package;
+
+    List<int> selectedMenuItems = ViewBag.SelectedMenuItems;
+    List<int> selectedAddOns = ViewBag.SelectedAddOns;
+    List<int> selectedDecorations = ViewBag.SelectedDecorations;
+}
+
+<style>
+
+    .page-title {
+        color: #734120;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    .main-card {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .section-title {
+        color: #734120;
+        font-size: 24px;
+        font-weight: 700;
+        margin-top: 35px;
+        margin-bottom: 20px;
+        border-left: 5px solid #B5885E;
+        padding-left: 14px;
+    }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+    .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+        gap: 20px;
+    }
+
+    .check-card {
+        border: 1px solid #E0C49F;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fffaf5;
+        transition: 0.3s ease;
+    }
+
+        .check-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+    .item-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-bottom: 1px solid #E0C49F;
+    }
+
+    .item-body {
+        padding: 18px;
+    }
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+    }
+
+        .checkbox-label input[type=checkbox] {
+            width: 18px;
+            height: 18px;
+            accent-color: #734120;
+            cursor: pointer;
+        }
+
+    .item-name {
+        font-size: 17px;
+        font-weight: 700;
+        color: #734120;
+    }
+
+    .item-category {
+        display: inline-block;
+        background: #E0C49F;
+        color: #734120;
+        padding: 5px 12px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-top: 12px;
+        margin-bottom: 10px;
+    }
+
+    .item-price {
+        color: #B5885E;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .description-text {
+        margin-top: 10px;
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .submit-btn {
+        margin-top: 35px;
+        background: #734120;
+        color: white;
+        border: none;
+        padding: 14px 22px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
+
+        .submit-btn:hover {
+            background: #B5885E;
+        }
+
+</style>
+
+<h1 class="page-title">
+    Edit Inclusions - @package.PackageName
+</h1>
+
+<form method="post">
+
+    <input type="hidden"
+           name="PackageId"
+           value="@package.PackageId" />
+
+    <div class="main-card">
+
+        <!-- MENU ITEMS -->
+
+      @*   <div class="section-title">
+            Menu Items
+        </div>
+
+        <div class="checkbox-grid">
+
+            @foreach (var item in ViewBag.MenuItems)
+            {
+                <div class="check-card">
+
+                    <img src="@item.ImageUrl"
+                         alt="@item.ItemName"
+                         class="item-image" />
+
+                    <div class="item-body">
+
+                        <label class="checkbox-label">
+
+                            <input type="checkbox"
+                                   name="MenuItemIds"
+                                   value="@item.MenuItemId"
+                                   @(selectedMenuItems.Contains(item.MenuItemId) ? "checked" : "") />
+
+                            <span class="item-name">
+                                @item.ItemName
+                            </span>
+
+                        </label>
+
+                        <div class="item-category">
+                            @item.Category
+                        </div>
+
+                        <div class="item-price">
+                            ₹@item.Price
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div> *@
+
+        <div class="section-title">
+            Menu Items
+        </div>
+
+        <div style="margin-bottom:25px;">
+
+            <select id="categoryFilter"
+                    class="form-select"
+                    style="max-width:250px;
+           padding:12px;
+           border-radius:10px;
+           border:1px solid #D6B08B;">
+
+                @foreach (var category in ViewBag.Categories)
+                {
+                    <option value="@category"
+                            selected="@(category == "Soups")">
+                        @category
+                    </option>
+                }
+
+            </select>
+
+        </div>
+
+        <div class="checkbox-grid">
+
+            @foreach (var item in ViewBag.MenuItems)
+            {
+                <div class="check-card menu-item-card"
+                     data-category="@item.Category">
+
+                    <img src="@item.ImageUrl"
+                         alt="@item.ItemName"
+                         class="item-image" />
+
+                    <div class="item-body">
+
+                        <label class="checkbox-label">
+
+                            <input type="checkbox"
+                                   name="MenuItemIds"
+                                   value="@item.MenuItemId"
+                                   @(selectedMenuItems.Contains(item.MenuItemId) ? "checked" : "") />
+
+                            <span class="item-name">
+                                @item.ItemName
+                            </span>
+
+                        </label>
+
+                        <div class="item-category">
+                            @item.Category
+                        </div>
+
+                        <div class="item-price">
+                            ₹@item.Price
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- ADDONS -->
+
+        <div class="section-title">
+            AddOns
+        </div>
+
+        <div class="checkbox-grid">
+
+            @foreach (var item in ViewBag.AddOns)
+            {
+                <div class="check-card">
+
+                    <img src="@item.ImageUrl"
+                         alt="@item.AddOnName"
+                         class="item-image" />
+
+                    <div class="item-body">
+
+                        <label class="checkbox-label">
+
+                            <input type="checkbox"
+                                   name="AddOnIds"
+                                   value="@item.AddOnId"
+                                   @(selectedAddOns.Contains(item.AddOnId) ? "checked" : "") />
+
+                            <span class="item-name">
+                                @item.AddOnName
+                            </span>
+
+                        </label>
+
+                        <div class="item-price">
+                            ₹@item.Price
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(item.Description))
+                        {
+                            <div class="description-text">
+                                @item.Description
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- DECORATIONS -->
+
+        <div class="section-title">
+            Decorations
+        </div>
+
+        <div class="checkbox-grid">
+
+            @foreach (var item in ViewBag.Decorations)
+            {
+                <div class="check-card">
+
+                    <img src="@item.ImageUrl"
+                         alt="@item.DecorationName"
+                         class="item-image" />
+
+                    <div class="item-body">
+
+                        <label class="checkbox-label">
+
+                            <input type="checkbox"
+                                   name="DecorationIds"
+                                   value="@item.DecorationId"
+                                   @(selectedDecorations.Contains(item.DecorationId) ? "checked" : "") />
+
+                            <span class="item-name">
+                                @item.DecorationName
+                            </span>
+
+                        </label>
+
+                        <div class="item-price">
+                            ₹@item.Price
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+        <button type="submit"
+                class="submit-btn">
+            UPDATE INCLUSIONS
+        </button>
+
+    </div>
+
+</form>
+<script>
+
+    function filterMenuItems() {
+
+        let selectedCategory =
+            document.getElementById("categoryFilter").value;
+
+        let cards =
+            document.querySelectorAll(".menu-item-card");
+
+        cards.forEach(card => {
+
+            let category =
+                card.getAttribute("data-category");
+
+            if (category === selectedCategory) {
+                card.style.display = "block";
+            }
+            else {
+                card.style.display = "none";
+            }
+
+        });
+    }
+
+    document.getElementById("categoryFilter")
+        .addEventListener("change", filterMenuItems);
+
+    window.onload = filterMenuItems;
+
+</script>

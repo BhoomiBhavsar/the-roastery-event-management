@@ -1,0 +1,211 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+
+    .stat-card {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid var(--primary-teal);
+    }
+
+    .stat-icon {
+        font-size: 32px;
+        margin-bottom: 12px;
+    }
+
+    .stat-label {
+        color: var(--text-light);
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--primary-dark);
+    }
+
+    .chart-container {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        margin-bottom: 24px;
+    }
+
+    .chart-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 20px;
+    }
+
+    .quick-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+    }
+
+    .quick-link {
+        background: #734120;
+        color: var(--white);
+        padding: 20px;
+        border-radius: 12px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        box-shadow: none;
+    }
+
+        .quick-link:hover {
+            background: #8B552D;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(115, 65, 32, 0.25);
+            color: var(--white);
+        }
+
+    .quick-link-icon {
+        font-size: 24px;
+        color: #E0C49F;
+    }
+
+    .recent-activities {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .activity-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+    .activity-badge {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 16px;
+        font-size: 18px;
+    }
+
+    .activity-content {
+        flex: 1;
+    }
+
+    .activity-title {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 4px;
+    }
+
+    .activity-time {
+        color: var(--text-light);
+        font-size: 12px;
+
+
+    }
+</style>
+
+<div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <span class="breadcrumb-item active">Home</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item">Dashboard</span>
+    </div>
+</div>
+
+<!-- STAT CARDS -->
+<div class="dashboard-grid">
+
+    <div class="stat-card">
+        <div class="stat-label">Event Types</div>
+        <div class="stat-value">
+            @ViewBag.EventTypesCount
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Areas</div>
+        <div class="stat-value">
+            @ViewBag.AreasCount
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Menu Items</div>
+        <div class="stat-value">
+            @ViewBag.MenuItemsCount
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Decorations</div>
+        <div class="stat-value">
+            @ViewBag.DecorationsCount
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Add-ons</div>
+        <div class="stat-value">
+            @ViewBag.AddOnsCount
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label">Packages</div>
+        <div class="stat-value">
+            @ViewBag.PackagesCount
+        </div>
+    </div>
+
+</div>
+<!-- QUICK LINKS -->
+<div class="card">
+    <div class="card-title">Quick Access</div>
+    <div class="quick-links">
+        <a href="/Admin/EventTypes/Create" class="quick-link">
+            <span>New Event Type</span>
+        </a>
+        <a href="/Admin/Areas/Create" class="quick-link">
+            <span>New Area</span>
+        </a>
+        <a href="/Admin/MenuItems/Create" class="quick-link">
+            <span>New Menu Item</span>
+        </a>
+        <a href="/Admin/Decorations/Create" class="quick-link">
+            <span>New Decoration</span>
+        </a>
+        <a href="/Admin/AddOns/Create" class="quick-link">
+            <span>New Add-on</span>
+        </a>
+        <a href="/Admin/EventPackages/Create" class="quick-link">
+            <span>New Package</span>
+        </a>
+    </div>
+</div>
+

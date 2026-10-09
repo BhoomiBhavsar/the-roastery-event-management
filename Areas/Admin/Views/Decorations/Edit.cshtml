@@ -1,0 +1,172 @@
+@model EventMVC.Models.Decoration
+
+@{
+    ViewData["Title"] = "Edit Decoration";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .form-container {
+        max-width: 600px;
+    }
+
+    .form-card {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .form-actions .btn {
+        flex: 1;
+    }
+
+    .validation-message {
+        color: var(--danger);
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        pointer-events: none;
+    }
+
+    .form-control.with-icon {
+        padding-right: 45px;
+    }
+
+    .edit-badge {
+        display: inline-block;
+        background-color: var(--primary-light);
+        color: var(--primary-dark);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-left: 8px;
+    }
+</style>
+
+<div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <span class="breadcrumb-item"><a href="/" style="color: var(--text-light); text-decoration: none;">Home</a></span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item"><a href="/Admin/Decorations" style="color: var(--text-light); text-decoration: none;">Decorations</a></span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">Edit</span>
+    </div>
+</div>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title"> Edit Decoration <span class="edit-badge">ID: @Model.DecorationId</span></h1>
+    </div>
+</div>
+
+
+
+<div class="form-container">
+    <div class="form-card">
+        <form asp-controller="Decorations"
+              asp-action="Edit"
+              asp-route-id="@Model.DecorationId"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" name="DecorationId" value="@Model.DecorationId">
+
+            @*  <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div> *@
+
+            <div class="form-group">
+                <label class="form-label">Decoration Name *</label>
+
+                <div class="input-group">
+                    <input name="DecorationName"
+                           value="@Model.DecorationName"
+                           class="form-control with-icon"
+                           placeholder="e.g., Balloon Decoration, Floral Setup, Themed Lights">
+
+                </div>
+
+                <span class="validation-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Price</label>
+
+                <div class="input-group">
+                    <input name="Price"
+                           value="@Model.Price"
+                           class="form-control with-icon"
+                           type="number"
+                           placeholder="e.g., 5000"
+                           min="0"
+                           step="0.01">
+
+                </div>
+
+                <span class="validation-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Image URL</label>
+
+                <div class="input-group">
+                    <input name="ImageUrl"
+                           value="@Model.ImageUrl"
+                           class="form-control with-icon"
+                           placeholder="https://example.com/image.jpg">
+
+                </div>
+
+                <span class="validation-message"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <input type="checkbox"
+                           name="IsActive"
+                           value="true"
+                           @(Model.IsActive ? "checked" : "")
+                           style="margin-right: 8px; cursor: pointer;">
+
+                    Active Status
+                </label>
+
+                <p style="color: var(--text-light); font-size: 12px; margin-top: 6px;">
+                    Enable this decoration for event booking
+                </p>
+            </div>
+
+            <div class="form-actions">
+                <a href="@Url.Action("Index")" class="btn btn-secondary">Cancel</a>
+
+                <button type="submit" class="btn btn-primary">
+                     Save Changes
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

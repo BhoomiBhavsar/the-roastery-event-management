@@ -1,0 +1,50 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container mt-5">
+
+    <div class="card shadow border-0 rounded-4">
+
+        <div class="card-header"
+             style="background-color:#734120;color:white;">
+
+            <h3 class="mb-0">
+                My Profile
+            </h3>
+
+        </div>
+
+        <div class="card-body p-4">
+
+            <div class="mb-4">
+
+                <label class="fw-bold">
+                    User Name
+                </label>
+
+                <p class="fs-5">
+                    @Model.UserName
+                </p>
+
+            </div>
+
+            <div>
+
+                <label class="fw-bold">
+                    Email
+                </label>
+
+                <p class="fs-5">
+                    @Model.Email
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

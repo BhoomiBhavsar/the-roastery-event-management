@@ -1,0 +1,416 @@
+﻿
+
+@{
+    ViewData["Title"] = "Home - Elite Events Restaurant";
+}
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #2B1408 0%, #452816 100%);
+        color: #F5EFE1;
+        padding: 6rem 0;
+        text-align: center;
+        border-radius: 10px;
+        margin-bottom: 3rem;
+    }
+
+        .hero-section h1 {
+            color: #E0C49F;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+    .section-title {
+        color: #2B1408;
+        font-size: 2.2rem;
+        font-weight: bold;
+        margin: 3rem 0 2rem 0;
+        text-align: center;
+        border-bottom: 3px solid #734120;
+        padding-bottom: 1rem;
+    }
+
+    .section-subtitle {
+        color: #666;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(43, 20, 8, 0.15);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(43, 20, 8, 0.25);
+        }
+
+    .card-img-top {
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        color: #2B1408;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-text {
+        color: #666;
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+
+    .badge {
+        background-color: #734120;
+        color: #F5EFE1;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+
+    .price {
+        color: #E0C49F;
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    .view-more-btn {
+        background-color: #734120;
+        color: white;
+        padding: 0.6rem 2rem;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        border: none;
+        cursor: pointer;
+    }
+
+        .view-more-btn:hover {
+            background-color: #2B1408;
+            color: #E0C49F;
+            text-decoration: none;
+        }
+
+    .cta-section {
+        background: linear-gradient(135deg, #734120 0%, #452816 100%);
+        color: #F5EFE1;
+        padding: 3rem;
+        border-radius: 10px;
+        text-align: center;
+        margin: 3rem 0;
+    }
+
+        .cta-section h2 {
+            color: #E0C49F;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section .btn {
+            background-color: #E0C49F;
+            color: #2B1408;
+            font-weight: bold;
+            padding: 0.8rem 2.5rem;
+            margin-top: 1rem;
+        }
+
+            .cta-section .btn:hover {
+                background-color: #F5EFE1;
+                color: #2B1408;
+            }
+</style>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <h1>Welcome to The Roastery</h1>
+    @if (!User.Identity?.IsAuthenticated ?? true)
+    {
+        <a asp-area="Identity"
+           asp-page="/Account/Login"
+           style="margin-top:1.5rem;
+                  background:#734120;
+                  color:white;
+                  border:none;
+                  padding:12px 28px;
+                  border-radius:30px;
+                  text-decoration:none;
+                  display:inline-block;
+                  font-weight:600;">
+
+            Book Your Event
+
+        </a>
+    }
+    else
+    {
+        @* <a asp-controller="EventBookings"
+           asp-action="PredefinedPackages"
+           style="margin-top:1.5rem;
+              background:#734120;
+              color:white;
+              border:none;
+              padding:12px 28px;
+              border-radius:30px;
+              text-decoration:none;
+              display:inline-block;
+              font-weight:600;">
+
+            Start Booking
+
+        </a> *@
+    }
+</div>
+
+<!-- Event Types Section -->
+<div>
+    <h2 class="section-title">Event Types We Specialize In</h2>
+    <div class="card-grid">
+        @if (ViewBag.EventTypes != null && ViewBag.EventTypes.Count > 0)
+        {
+            @foreach (var eventType in ViewBag.EventTypes)
+            {
+                <div class="card">
+                    @if (!string.IsNullOrEmpty(eventType.ImageUrl))
+                    {
+                        <img src="@eventType.ImageUrl" class="card-img-top" alt="@eventType.Name">
+                    }
+                    else
+                    {
+                        <div class="card-img-top" style="background: linear-gradient(135deg, #734120 0%, #452816 100%); display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 3rem; color: #E0C49F;">🎊</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@eventType.Name</h5>
+                        <p class="card-text">@eventType.Description</p>
+                        <a asp-controller="EventTypes" asp-action="Packages" asp-route-id="@eventType.EventTypeId" class="view-more-btn">View Packages</a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div style="text-align: center; margin: 2rem 0;">
+        <a asp-controller="EventTypes" asp-action="Index" class="btn btn-outline-primary">View All Event Types</a>
+    </div>
+</div>
+
+<!-- Event Packages Section -->
+<div>
+    <h2 class="section-title">Our Featured Packages</h2>
+    <p class="section-subtitle">Pre-designed packages for your convenience</p>
+    <div class="card-grid">
+        @if (ViewBag.EventPackages != null && ViewBag.EventPackages.Count > 0)
+        {
+            @foreach (var package in ViewBag.EventPackages)
+            {
+                <div class="card">
+                    @if (!string.IsNullOrEmpty(package.ImageUrl))
+                    {
+                        <img src="@package.ImageUrl" class="card-img-top" alt="@package.PackageName">
+                    }
+                    else
+                    {
+                        <div class="card-img-top" style="background: linear-gradient(135deg, #E0C49F 0%, #734120 100%); display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 3rem; color: white;">📦</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@package.PackageName</h5>
+                        <span class="badge">@package.EventType?.Name</span>
+                        <p class="card-text">@package.Description</p>
+                        <p class="price">₹@package.PricePerGuest / Guest</p>
+                        <a asp-controller="EventTypes" asp-action="PackageDetails" asp-route-id="@package.PackageId" class="view-more-btn">View Details</a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+    <div style="text-align: center; margin: 2rem 0;">
+        <a asp-controller="EventTypes" asp-action="Index" class="btn btn-outline-primary">View All Packages</a>
+    </div>
+</div>
+
+
+
+<!-- Areas Section -->
+<div>
+    <h2 class="section-title">Explore Event Areas</h2>
+
+    <div class="card-grid">
+        @if (ViewBag.Areas != null && ViewBag.Areas.Count > 0)
+        {
+            @foreach (var area in ViewBag.Areas)
+            {
+                <div class="card">
+
+                    @if (!string.IsNullOrEmpty(area.ImageUrl))
+                    {
+                        <img src="@area.ImageUrl" class="card-img-top" alt="@area.AreaName">
+                    }
+                    else
+                    {
+                        <div class="card-img-top"
+                             style="background: linear-gradient(135deg, #734120 0%, #E0C49F 100%);
+                                                display:flex; align-items:center; justify-content:center;">
+                            <span style="font-size:3rem;">📍</span>
+                        </div>
+                    }
+
+                    <div class="card-body">
+                        <h5 class="card-title">@area.AreaName</h5>
+
+                        <p class="card-text">
+                            Capacity: @area.Capacity guests
+                        </p>
+
+                        <p class="card-text price">
+                            ₹@area.PricePerGuest / Guest
+                        </p>
+
+                      
+                    </div>
+
+                </div>
+            }
+        }
+    </div>
+
+   
+</div>
+
+<!-- Menu Items Section -->
+<div>
+    <h2 class="section-title">Delicious Menu Items</h2>
+    <p class="section-subtitle">Explore our gourmet culinary offerings</p>
+    <div class="card-grid">
+        @if (ViewBag.MenuItems != null && ViewBag.MenuItems.Count > 0)
+        {
+            @foreach (var menu in ViewBag.MenuItems)
+            {
+                <div class="card">
+                    @if (!string.IsNullOrEmpty(menu.ImageUrl))
+                    {
+                        <img src="@menu.ImageUrl" class="card-img-top" alt="@menu.ItemName">
+                    }
+                    else
+                    {
+                        <div class="card-img-top" style="background: linear-gradient(135deg, #452816 0%, #734120 100%); display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 3rem;">🍽️</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@menu.ItemName</h5>
+                        <span class="badge">@menu.Category</span>
+                        <p class="card-text">Premium culinary creation</p>
+                        <p class="price">₹@menu.Price</p>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<!-- Decorations Section -->
+<div>
+    <h2 class="section-title">Stunning Decorations</h2>
+    <p class="section-subtitle">Beautify your event with our elegant decorations</p>
+    <div class="card-grid">
+        @if (ViewBag.Decorations != null && ViewBag.Decorations.Count > 0)
+        {
+            @foreach (var decoration in ViewBag.Decorations)
+            {
+                <div class="card">
+                    @if (!string.IsNullOrEmpty(decoration.ImageUrl))
+                    {
+                        <img src="@decoration.ImageUrl" class="card-img-top" alt="@decoration.DecorationName">
+                    }
+                    else
+                    {
+                        <div class="card-img-top" style="background: linear-gradient(135deg, #E0C49F 0%, #452816 100%); display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 3rem;">🎨</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@decoration.DecorationName</h5>
+                        <p class="card-text">Elegant and sophisticated design</p>
+                        <p class="price">₹@decoration.Price</p>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
+<!-- Add-ons Section -->
+<div>
+    <h2 class="section-title">Special Add-ons</h2>
+    <p class="section-subtitle">Enhance your event experience</p>
+    <div class="card-grid">
+        @if (ViewBag.AddOns != null && ViewBag.AddOns.Count > 0)
+        {
+            @foreach (var addon in ViewBag.AddOns)
+            {
+                <div class="card">
+                    @if (!string.IsNullOrEmpty(addon.ImageUrl))
+                    {
+                        <img src="@addon.ImageUrl" class="card-img-top" alt="@addon.AddOnName">
+                    }
+                    else
+                    {
+                        <div class="card-img-top" style="background: linear-gradient(135deg, #734120 0%, #E0C49F 100%); display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 3rem;">✨</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@addon.AddOnName</h5>
+                        <p class="card-text">@addon.Description</p>
+                        <p class="price">₹@addon.Price</p>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="cta-section">
+    <h2>Ready to Create Your Perfect Event?</h2>
+    <p>Let us help you celebrate your special moments with excellence and elegance.</p>
+    @if (User.Identity?.IsAuthenticated ?? false)
+    {
+        <a asp-controller="EventBookings" asp-action="CustomEvent" class="btn">Create Custom Event</a>
+        <a asp-controller="Inquiries" asp-action="Index" class="btn">Send Inquiry</a>
+
+       
+    }
+    else
+    {
+        <a asp-controller="Account" asp-area="Identity" asp-action="Login" class="btn">Login to Book</a>
+    }
+</div>

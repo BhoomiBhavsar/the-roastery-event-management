@@ -1,0 +1,66 @@
+﻿@* @model EventMVC.Models.EventBooking
+
+@{
+    ViewData["Title"] = "Booking Pending";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body p-5 text-center">
+
+            <h1 class="text-warning mb-4">⏳ Booking Pending Approval</h1>
+
+            <p class="fs-5">
+                Your booking has been submitted successfully.
+            </p>
+
+            <p>
+                Admin will review your booking request.
+            </p>
+
+            <hr />
+
+            <h4>Booking Details</h4>
+
+            <p><strong>Booking ID:</strong> @Model.BookingId</p>
+            <p><strong>Event:</strong> @Model.EventType?.Name</p>
+            <p><strong>Date:</strong> @Model.EventDate</p>
+            <p><strong>Status:</strong> @Model.BookingStatus</p>
+
+            <a asp-action="MyBookings" class="btn btn-dark mt-3">
+                View My Bookings
+            </a>
+
+        </div>
+    </div>
+</div> *@
+
+
+
+@model EventMVC.Models.EventBooking
+
+<h1>Booking Submitted Successfully</h1>
+
+<p>
+    Booking ID:
+    @Model.BookingId
+</p>
+
+<p>
+    Event:
+    @Model.EventType?.Name
+</p>
+
+<p>
+    Status:
+    @Model.BookingStatus
+</p>
+
+<p>
+    Total:
+    ₹@Model.TotalAmount
+</p>
+
+<a asp-action="MyBookings">
+    View My Bookings
+</a>

@@ -1,0 +1,420 @@
+﻿@* @model IEnumerable<EventMVC.Models.Inquiry>
+
+@{
+    ViewData["Title"] = "Inquiry Management";
+}
+
+<style>
+    :root {
+        --primary-dark: #734120;
+        --primary-light: #E0C49F;
+        --primary-teal: #B5885E;
+        --white: #FFFFFF;
+        --light-bg: #F8F5F1;
+        --border-color: #E7D7C3;
+        --text-dark: #4A2C17;
+        --text-light: #8B6B52;
+        --success: #8A5A3B;
+        --danger: #A94438;
+        --warning: #C28B4E;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary-teal));
+        padding: 25px 30px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        color: white;
+        box-shadow: 0 8px 25px rgba(115,65,32,0.15);
+    }
+
+        .page-header h2 {
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            margin: 5px 0 0;
+            opacity: .9;
+        }
+
+    .inquiry-card {
+        background: var(--white);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,.08);
+        border: 1px solid var(--border-color);
+    }
+
+    .custom-table {
+        margin-bottom: 0;
+    }
+
+        .custom-table thead {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+            .custom-table thead th {
+                padding: 16px;
+                border: none;
+                font-weight: 600;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+        .custom-table tbody td {
+            padding: 15px;
+            vertical-align: middle;
+            color: var(--text-dark);
+            border-color: var(--border-color);
+        }
+
+        .custom-table tbody tr:hover {
+            background: rgba(224,196,159,.15);
+        }
+
+    .message-cell {
+        max-width: 300px;
+        white-space: normal;
+        word-wrap: break-word;
+        color: var(--text-light);
+    }
+
+    .status-badge {
+        padding: 8px 14px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .status-pending {
+        background: rgba(194,139,78,.15);
+        color: var(--warning);
+    }
+
+    .status-answered {
+        background: rgba(138,90,59,.15);
+        color: var(--success);
+    }
+
+    .reply-btn {
+        background: linear-gradient(135deg, var(--primary-dark), var(--primary-teal));
+        color: white;
+        padding: 10px 18px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: .3s;
+        display: inline-block;
+    }
+
+        .reply-btn:hover {
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(115,65,32,.25);
+        }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px;
+        color: var(--text-light);
+    }
+
+    .counter-box {
+        background: var(--light-bg);
+        border: 1px solid var(--border-color);
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        color: var(--text-dark);
+        font-weight: 600;
+    }
+</style>
+
+<div class="page-header">
+    <h2>📩 Inquiry Management</h2>
+    <p>View and respond to customer inquiries</p>
+</div>
+
+<div class="counter-box">
+    Total Inquiries: @Model.Count()
+</div>
+
+<div class="inquiry-card">
+
+    ```
+    @if (Model.Any())
+    {
+        <table class="table custom-table">
+
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Event Type</th>
+                    <th>Guests</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th width="140">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            <strong>@item.Name</strong>
+                        </td>
+
+                        <td>@item.Email</td>
+
+                        <td>@item.EventType?.Name</td>
+
+                        <td>@item.GuestCount</td>
+
+                        <td class="message-cell">
+                            @item.Message
+                        </td>
+
+                        <td>
+                            @if (item.Status == "Answered")
+                            {
+                                <span class="status-badge status-answered">
+                                    Answered
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="status-badge status-pending">
+                                    Pending
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            <a asp-action="Reply"
+                               asp-route-id="@item.InquiryId"
+                               class="reply-btn">
+                                Reply
+                            </a>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <div class="empty-state">
+            <h4>No inquiries found</h4>
+            <p>No customer inquiries have been submitted yet.</p>
+        </div>
+    }
+    ```
+
+</div> *@
+
+
+
+@model IEnumerable<EventMVC.Models.Inquiry>
+
+@{
+    ViewData["Title"] = "Inquiry Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .message-cell {
+        max-width: 300px;
+        white-space: normal;
+        word-wrap: break-word;
+        color: var(--text-light);
+    }
+
+    .stats-card {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        border-left: 4px solid var(--primary-teal);
+    }
+
+    .stats-number {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--primary-dark);
+    }
+
+    .stats-label {
+        color: var(--text-light);
+        font-size: 14px;
+    }
+
+    .badge-pending {
+        background: #FFF3CD;
+        color: #856404;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .badge-answered {
+        background: #D4EDDA;
+        color: #155724;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .reply-btn {
+        background: var(--primary-teal);
+        color: white !important;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: .3s;
+    }
+
+        .reply-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+</style>
+
+<div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <span class="breadcrumb-item">
+            <a href="/" style="color: var(--text-light); text-decoration:none;">
+                Home
+            </a>
+        </span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">
+            Inquiries
+        </span>
+    </div>
+</div>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Inquiry Management</h1>
+        <p class="page-subtitle">
+            View and respond to customer inquiries
+        </p>
+    </div>
+</div>
+
+<div class="stats-card">
+    <div class="stats-number">@Model.Count()</div>
+    <div class="stats-label">Total Inquiries</div>
+</div>
+
+<div class="table-container">
+
+    @if (Model.Any())
+    {
+        <table class="table">
+
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Event Type</th>
+                    <th>Guests</th>
+                    <th>Message</th>
+                    <th>Status</th>
+                    <th style="width:120px;">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            <strong>@item.Name</strong>
+                        </td>
+
+                        <td>@item.Email</td>
+
+                        <td>
+                            @(item.EventType?.Name ?? "-")
+                        </td>
+
+                        <td>
+                            <span style="
+                                        background: var(--primary-light);
+                                        color: var(--primary-dark);
+                                        padding:4px 12px;
+                                        border-radius:20px;
+                                        font-size:12px;
+                                        font-weight:600;">
+                                @item.GuestCount Guests
+                            </span>
+                        </td>
+
+                        <td class="message-cell">
+                            @item.Message
+                        </td>
+
+                        <td>
+                            @if (item.Status == "Answered")
+                            {
+                                <span class="badge-answered">
+                                    Answered
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge-pending">
+                                    Pending
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            <div class="action-buttons">
+                                <a href="@Url.Action("Reply", "Inquiries", new { area = "Admin", id = item.InquiryId })"
+                                   class="reply-btn">
+                                    Reply
+                                </a>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <div class="empty-state">
+            <div class="empty-state-title">
+                No Inquiries Found
+            </div>
+            <p>
+                No customer inquiries have been submitted yet.
+            </p>
+        </div>
+    }
+
+</div>

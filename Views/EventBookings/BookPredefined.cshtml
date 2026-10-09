@@ -1,0 +1,440 @@
+@model EventMVC.Models.EventPackage
+
+@{
+    ViewData["Title"] = "Book " + Model.PackageName;
+}
+
+<style>
+    .booking-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(43, 20, 8, 0.12);
+        overflow: hidden;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .booking-header {
+        background: linear-gradient(135deg, #2B1408 0%, #452816 100%);
+        color: #F5EFE1;
+        padding: 2rem;
+    }
+
+    .booking-header h1 {
+        color: #E0C49F;
+        font-size: 2rem;
+        margin: 0;
+    }
+
+    .booking-body {
+        padding: 2.5rem;
+    }
+
+    .package-summary {
+        background-color: #F5EFE1;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        border-left: 4px solid #734120;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.8rem;
+        color: #666;
+    }
+
+    .summary-row strong {
+        color: #2B1408;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+    }
+
+    .form-section h3 {
+        color: #2B1408;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #E0C49F;
+        padding-bottom: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        color: #2B1408;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #E0C49F;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #734120;
+        box-shadow: 0 0 0 0.2rem rgba(115, 65, 32, 0.1);
+    }
+
+    .required {
+        color: #d32f2f;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .cost-breakdown {
+        background-color: #F5EFE1;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+
+    .cost-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        color: #666;
+    }
+
+    .cost-row.total {
+        border-top: 2px solid #E0C49F;
+        padding-top: 1rem;
+        margin-bottom: 0;
+        font-weight: bold;
+        color: #2B1408;
+        font-size: 1.2rem;
+    }
+
+    .cost-value {
+        color: #734120;
+        font-weight: bold;
+    }
+
+    .action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .btn-submit {
+        background-color: #734120;
+        color: white;
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .btn-submit:hover {
+        background-color: #2B1408;
+        color: #E0C49F;
+    }
+
+    .btn-cancel {
+        background-color: #E0C49F;
+        color: #2B1408;
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .btn-cancel:hover {
+        background-color: #F5EFE1;
+        color: #2B1408;
+        text-decoration: none;
+    }
+
+    .info-box {
+        background-color: #d1ecf1;
+        border: 1px solid #bee5eb;
+        border-radius: 5px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        color: #0c5460;
+    }
+
+    .info-box strong {
+        color: #0c5460;
+    }
+
+  
+</style>
+
+<div class="booking-container">
+    <div class="booking-header">
+        <h1> Book Your Package</h1>
+        <p style="margin: 0.5rem 0 0 0;">@Model.PackageName</p>
+    </div>
+
+    <div class="booking-body">
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        <!-- Package Summary -->
+        <div class="package-summary">
+            <h4 style="color: #2B1408; margin-bottom: 1rem;">Package Details</h4>
+            <div class="summary-row">
+                <span>Package Name:</span>
+                <strong>@Model.PackageName</strong>
+            </div>
+            <div class="summary-row">
+                <span>Event Type:</span>
+                <strong>@Model.EventType?.Name</strong>
+            </div>
+            <div class="summary-row">
+                <span>Price per Guest:</span>
+                <strong style="color: #734120;">₹@Model.PricePerGuest</strong>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong> Note:</strong> Final cost will depend on the number of guests and selected area.
+        </div>
+
+        <!-- Booking Form -->
+        <form method="post" asp-action="SavePredefinedBooking">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="packageId" value="@Model.PackageId">
+
+            <!-- Event Details Section -->
+            <div class="form-section">
+                <h3> Event Details</h3>
+                
+                <div class="form-group">
+                    <label for="eventDate">Event Date <span class="required">*</span></label>
+                    <input type="date" id="eventDate" name="eventDate" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");" required>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="startTime">Start Time <span class="required">*</span></label>
+                        <input type="time" id="startTime" name="startTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endTime">End Time <span class="required">*</span></label>
+                        <input type="time" id="endTime" name="endTime" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guests & Area Section -->
+            <div class="form-section">
+                <h3> Guests & Venue</h3>
+
+                <div class="form-group">
+                    <label for="guestCount">Number of Guests <span class="required">*</span></label>
+                    <input type="number" id="guestCount" name="guestCount" min="1" placeholder="Enter number of guests" required onchange="updateCost()">
+                </div>
+
+                @* <div class="form-group">
+                    <label for="areaId">Select Area <span class="required">*</span></label>
+                    <select id="areaId" name="areaId" required onchange="updateCost()">
+                        <option value="">-- Select Area --</option>
+                        @if (ViewBag.Areas != null)
+                        {
+                            @foreach (var area in ViewBag.Areas)
+                            {
+                                <option value="@area.AreaId" data-price="@area.PricePerGuest">
+                                    @area.AreaName - ₹@area.PricePerGuest/Guest (Capacity: @area.Capacity)
+                                </option>
+                            }
+                        }
+                    </select>
+                </div> *@
+
+                <div class="form-group">
+                    <label for="areaId">
+                        Select Area <span class="required">*</span>
+                    </label>
+
+                    <select id="areaId"
+                            name="areaId"
+                            required
+                            onchange="updateCost()">
+
+                        <option value="">-- Select Area --</option>
+
+                        @if (ViewBag.Areas != null)
+                        {
+                            @foreach (var area in ViewBag.Areas)
+                            {
+                                <option value="@area.AreaId"
+                                        data-price="@area.PricePerGuest"
+                                        data-capacity="@area.Capacity">
+                                    @area.AreaName - ₹@area.PricePerGuest/Guest (Capacity: @area.Capacity)
+                                </option>
+                            }
+                        }
+                    </select>
+
+                    <div id="capacityError"
+                         class="alert alert-danger mt-2"
+                         style="display:none;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cost Breakdown Section -->
+            <div class="form-section">
+                <h3> Cost Breakdown</h3>
+                <div class="cost-breakdown">
+                    <div class="cost-row">
+                        <span>Package Cost:</span>
+                        <span class="cost-value">₹<span id="packageCost">0</span></span>
+                    </div>
+                    <div class="cost-row">
+                        <span>Area Cost:</span>
+                        <span class="cost-value">₹<span id="areaCost">0</span></span>
+                    </div>
+                    <div class="cost-row">
+                        <span>Subtotal:</span>
+                        <span class="cost-value">₹<span id="subtotal">0</span></span>
+                    </div>
+                    <div class="cost-row">
+                        <span>Tax (5%):</span>
+                        <span class="cost-value">₹<span id="tax">0</span></span>
+                    </div>
+                    <div class="cost-row total">
+                        <span>Total Amount:</span>
+                        <span>₹<span id="totalAmount">0</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button type="submit" class="btn-submit">✓ Confirm & Book</button>
+                <a href="javascript:history.back()" class="btn-cancel">← Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const packagePrice = @Model.PricePerGuest;
+
+   
+        function updateCost() {
+
+        const guestCount =
+            parseInt(document.getElementById('guestCount').value) || 0;
+
+        const areaSelect =
+            document.getElementById('areaId');
+
+        const selectedOption =
+            areaSelect.options[areaSelect.selectedIndex];
+
+        const areaPrice =
+            parseFloat(selectedOption.getAttribute('data-price')) || 0;
+
+        const capacity =
+            parseInt(selectedOption.getAttribute('data-capacity')) || 0;
+
+        const errorBox =
+            document.getElementById('capacityError');
+
+        if (guestCount > capacity && capacity > 0) {
+
+            errorBox.style.display = "block";
+
+            errorBox.innerHTML =
+                `Selected area capacity is only ${capacity} guests.`;
+        }
+        else {
+
+            errorBox.style.display = "none";
+            errorBox.innerHTML = "";
+        }
+
+        const packageCost = packagePrice * guestCount;
+        const areaCost = areaPrice * guestCount;
+        const subtotal = packageCost + areaCost;
+        const taxAmount = subtotal * 0.05;
+        const total = subtotal + taxAmount;
+
+        document.getElementById('packageCost').textContent =
+            packageCost.toFixed(2);
+
+        document.getElementById('areaCost').textContent =
+            areaCost.toFixed(2);
+
+        document.getElementById('subtotal').textContent =
+            subtotal.toFixed(2);
+
+        document.getElementById('tax').textContent =
+            taxAmount.toFixed(2);
+
+        document.getElementById('totalAmount').textContent =
+            total.toFixed(2);
+    }
+        document.querySelector("form").addEventListener("submit", function (e) {
+
+        const guestCount =
+            parseInt(document.getElementById('guestCount').value) || 0;
+
+        const areaSelect =
+            document.getElementById('areaId');
+
+        const selectedOption =
+            areaSelect.options[areaSelect.selectedIndex];
+
+        const capacity =
+            parseInt(selectedOption.getAttribute('data-capacity')) || 0;
+
+        if (guestCount > capacity) {
+
+            e.preventDefault();
+
+            document.getElementById('capacityError').style.display = "block";
+
+            document.getElementById('capacityError').innerHTML =
+                `Selected area capacity is only ${capacity} guests.`;
+
+            window.scrollTo({
+                top: document.getElementById('capacityError').offsetTop - 100,
+                behavior: 'smooth'
+            });
+        }
+    });
+
+    // Set minimum date to tomorrow
+    const today = new Date();
+    const tomorrow = new Date(today.setDate(today.getDate() + 1));
+    document.getElementById('eventDate').min = tomorrow.toISOString().split('T')[0];
+</script>
+
+
+
+
+     

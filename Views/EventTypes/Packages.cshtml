@@ -1,0 +1,229 @@
+
+@model IEnumerable<EventMVC.Models.EventPackage>
+
+@{
+    ViewData["Title"] = "Event Packages - Elite Events";
+}
+
+<style>
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        margin-bottom: 2rem;
+    }
+
+    .breadcrumb a {
+        color: #734120;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .breadcrumb a:hover {
+        color: #2B1408;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #2B1408 0%, #452816 100%);
+        color: #F5EFE1;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 3rem;
+    }
+
+    .page-header h1 {
+        color: #E0C49F;
+        font-size: 2.2rem;
+        margin: 0;
+    }
+
+    .package-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+        gap: 2.5rem;
+        margin-top: 2rem;
+    }
+
+    .package-card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(43, 20, 8, 0.12);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        background: white;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .package-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(43, 20, 8, 0.2);
+    }
+
+    .package-image {
+        height: 280px;
+        object-fit: cover;
+        background: linear-gradient(135deg, #E0C49F 0%, #734120 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+    }
+
+    .package-body {
+        padding: 2rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .package-name {
+        color: #2B1408;
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .package-type {
+        background-color: #E0C49F;
+        color: #2B1408;
+        display: inline-block;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        width: fit-content;
+    }
+
+    .package-description {
+        color: #666;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+    }
+
+    .package-price {
+        color: #734120;
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+    }
+
+    .package-price-label {
+        font-size: 0.85rem;
+        color: #999;
+        font-weight: normal;
+    }
+
+    .package-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .btn-details {
+        background-color: #734120;
+        color: white;
+        padding: 0.7rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .btn-details:hover {
+        background-color: #2B1408;
+        color: #E0C49F;
+        text-decoration: none;
+    }
+
+    .btn-book {
+        background-color: #E0C49F;
+        color: #2B1408;
+        padding: 0.7rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .btn-book:hover {
+        background-color: #F5EFE1;
+        color: #2B1408;
+        text-decoration: none;
+    }
+
+    .no-packages {
+        text-align: center;
+        padding: 3rem;
+        color: #666;
+    }
+</style>
+
+<nav class="breadcrumb">
+    <a asp-controller="EventTypes" asp-action="Index">Event Types</a>
+    <span> / <strong>@ViewBag.EventTypeName</strong></span>
+</nav>
+
+<div class="page-header">
+    <h1>@ViewBag.EventTypeName Packages</h1>
+    <p>Select and book the perfect package for your event</p>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="package-grid">
+        @foreach (var package in Model)
+        {
+            <div class="package-card">
+                @if (!string.IsNullOrEmpty(package.ImageUrl))
+                {
+                    <img src="@package.ImageUrl" class="package-image" alt="@package.PackageName">
+                }
+                else
+                {
+                    <div class="package-image"></div>
+                }
+                <div class="package-body">
+                    <h5 class="package-name">@package.PackageName</h5>
+                    <span class="package-type">@package.EventType?.Name</span>
+                    <p class="package-description">@package.Description</p>
+                    <div class="package-price">
+                        ₹@package.PricePerGuest
+                        <span class="package-price-label">/ Guest</span>
+                    </div>
+                    <div class="package-actions">
+                        <a asp-action="PackageDetails" asp-route-id="@package.PackageId" class="btn-details">
+                            View Details
+                        </a>
+                        @if (User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <a asp-controller="EventBookings" asp-action="BookPredefined" asp-route-packageId="@package.PackageId" class="btn-book">
+                                Book Now
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-area="Identity" asp-action="Login" class="btn-book">
+                                Login to Book
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="no-packages">
+        <h3>No Packages Available</h3>
+        <p>Sorry, no packages are available for this event type. Please check back later.</p>
+    </div>
+}

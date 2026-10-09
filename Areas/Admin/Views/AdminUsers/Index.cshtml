@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@{
+    ViewData["Title"] = "User Details";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    int sr = 1;
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">
+        User Details
+    </h2>
+
+    <table class="table table-bordered table-hover align-middle">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>No.</th>
+
+                <th>User Name</th>
+
+                <th>Email</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var user in Model)
+            {
+                <tr>
+
+                    <td>
+                        @sr
+                    </td>
+
+                    <td>
+                        @user.UserName
+                    </td>
+
+                    <td>
+                        @user.Email
+                    </td>
+
+                </tr>
+
+                sr++;
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

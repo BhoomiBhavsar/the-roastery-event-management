@@ -1,0 +1,409 @@
+﻿@{
+    ViewData["Title"] = "Package Inclusions";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    var package = ViewBag.Package;
+}
+
+<style>
+    .top-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .page-title {
+        color: #734120;
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .top-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .top-btn {
+        background: #734120;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
+
+        .top-btn:hover {
+            background: #B5885E;
+            color: white;
+        }
+
+    .section-card {
+        background: white;
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .section-title {
+        color: #734120;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        border-left: 5px solid #B5885E;
+        padding-left: 14px;
+    }
+
+    .item-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+        gap: 22px;
+    }
+
+    .item-card {
+        border: 1px solid #E0C49F;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fffaf5;
+        transition: 0.3s ease;
+    }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        }
+
+    .item-image {
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
+        border-bottom: 1px solid #E0C49F;
+    }
+
+    .item-body {
+        padding: 18px;
+    }
+
+    .item-name {
+        font-size: 18px;
+        font-weight: 700;
+        color: #734120;
+        margin-bottom: 10px;
+    }
+
+    .item-price {
+        color: #B5885E;
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    .item-category {
+        display: inline-block;
+        background: #E0C49F;
+        color: #734120;
+        padding: 5px 12px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .delete-btn {
+        display: inline-block;
+        background: #734120;
+        color: white;
+        text-decoration: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
+
+        .delete-btn:hover {
+            background: #B5885E;
+            color: white;
+        }
+
+    .empty-box {
+        text-align: center;
+        padding: 40px;
+        background: #fffaf5;
+        border: 1px dashed #B5885E;
+        border-radius: 12px;
+        color: #734120;
+        font-size: 16px;
+        font-weight: 600;
+    }
+</style>
+
+<div class="top-section">
+
+    <div>
+        <h1 class="page-title">
+            @package.PackageName Inclusions
+        </h1>
+    </div>
+
+    <div class="top-buttons">
+
+        <a href="/Admin/PackageInclusions/Add/@package.PackageId"
+           class="top-btn">
+            ADD INCLUSIONS
+        </a>
+
+        <a href="/Admin/PackageInclusions/Edit/@package.PackageId"
+           class="top-btn">
+            EDIT INCLUSIONS
+        </a>
+
+    </div>
+
+</div>
+
+<!-- MENU ITEMS -->
+
+@* <div class="section-card">
+
+    <div class="section-title">
+        Menu Items
+    </div>
+
+    @if (ViewBag.MenuItems.Count > 0)
+    {
+        <div class="item-grid">
+
+            @foreach (var item in ViewBag.MenuItems)
+            {
+                <div class="item-card">
+
+                    <img src="@item.MenuItem.ImageUrl"
+                         alt="@item.MenuItem.ItemName"
+                         class="item-image" />
+
+                    <div class="item-body">
+
+                        <div class="item-name">
+                            @item.MenuItem.ItemName
+                        </div>
+
+                        <div class="item-category">
+                            @item.MenuItem.Category
+                        </div>
+
+                        <div class="item-price">
+                            ₹@item.MenuItem.Price
+                        </div>
+
+                        <a href="/Admin/PackageInclusions/DeleteMenuItem/@item.Id"
+                           class="delete-btn"
+                           onclick="return confirm('Remove this menu item from package?')">
+                            DELETE
+                        </a>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="empty-box">
+            No Menu Items Added
+        </div>
+    }
+
+</div> *@
+
+
+
+<!-- MENU ITEMS -->
+
+<div class="section-card">
+
+    <div class="section-title">
+        Menu Items
+    </div>
+
+    @if (ViewBag.MenuItems.Count > 0)
+    {
+        var groupedMenuItems = ((IEnumerable<dynamic>)ViewBag.MenuItems)
+        .GroupBy(x => x.MenuItem.Category);
+
+        @foreach (var categoryGroup in groupedMenuItems)
+        {
+            <div style="margin-bottom:40px;">
+
+                <h3 style="
+                            color:#734120;
+                            font-size:22px;
+                            font-weight:700;
+                            margin-bottom:20px;
+                            padding-bottom:10px;
+                            border-bottom:2px solid #E0C49F;">
+                    @categoryGroup.Key
+                </h3>
+
+                <div class="item-grid">
+
+                    @foreach (var item in categoryGroup)
+                    {
+                        <div class="item-card">
+
+                            <img src="@item.MenuItem.ImageUrl"
+                                 alt="@item.MenuItem.ItemName"
+                                 class="item-image" />
+
+                            <div class="item-body">
+
+                                <div class="item-name">
+                                    @item.MenuItem.ItemName
+                                </div>
+
+                                <div class="item-price">
+                                    ₹@item.MenuItem.Price
+                                </div>
+
+                                <a href="/Admin/PackageInclusions/DeleteMenuItem/@item.Id"
+                                   class="delete-btn"
+                                   onclick="return confirm('Remove this menu item from package?')">
+                                    DELETE
+                                </a>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+        }
+    }
+    else
+    {
+        <div class="empty-box">
+            No Menu Items Added
+        </div>
+    }
+
+</div>
+
+<!-- ADDONS -->
+
+<div class="section-card">
+
+    <div class="section-title">
+        AddOns
+    </div>
+
+    @if (ViewBag.AddOns.Count > 0)
+    {
+        <div class="item-grid">
+
+            @foreach (var item in ViewBag.AddOns)
+            {
+                <div class="item-card">
+
+                    <img src="@item.AddOn.ImageUrl"
+                         alt="@item.AddOn.AddOnName"
+                         class="item-image" />
+
+                    <div class="item-body">
+
+                        <div class="item-name">
+                            @item.AddOn.AddOnName
+                        </div>
+
+                        <div class="item-price">
+                            ₹@item.AddOn.Price
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(item.AddOn.Description))
+                        {
+                            <p style="font-size:13px;color:#666;margin-bottom:12px;">
+                                @item.AddOn.Description
+                            </p>
+                        }
+
+                        <a href="/Admin/PackageInclusions/DeleteAddOn/@item.Id"
+                           class="delete-btn"
+                           onclick="return confirm('Remove this addon from package?')">
+                            DELETE
+                        </a>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="empty-box">
+            No AddOns Added
+        </div>
+    }
+
+</div>
+
+<!-- DECORATIONS -->
+
+<div class="section-card">
+
+    <div class="section-title">
+        Decorations
+    </div>
+
+    @if (ViewBag.Decorations.Count > 0)
+    {
+        <div class="item-grid">
+
+            @foreach (var item in ViewBag.Decorations)
+            {
+                <div class="item-card">
+
+                    <img src="@item.Decoration.ImageUrl"
+                         alt="@item.Decoration.DecorationName"
+                         class="item-image" />
+
+                    <div class="item-body">
+
+                        <div class="item-name">
+                            @item.Decoration.DecorationName
+                        </div>
+
+                        <div class="item-price">
+                            ₹@item.Decoration.Price
+                        </div>
+
+                        <a href="/Admin/PackageInclusions/DeleteDecoration/@item.Id"
+                           class="delete-btn"
+                           onclick="return confirm('Remove this decoration from package?')">
+                            DELETE
+                        </a>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="empty-box">
+            No Decorations Added
+        </div>
+    }
+
+</div>

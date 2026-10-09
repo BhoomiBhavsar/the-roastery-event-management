@@ -1,0 +1,217 @@
+@model EventMVC.Models.MenuItem
+
+@{
+    ViewData["Title"] = "Create Menu Item";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .form-container {
+        max-width: 600px;
+    }
+
+    .form-card {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .form-actions .btn {
+        flex: 1;
+    }
+
+    .validation-message {
+        color: var(--danger);
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        pointer-events: none;
+    }
+
+    .form-control.with-icon {
+        padding-right: 45px;
+    }
+</style>
+
+<div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <span class="breadcrumb-item"><a href="/" style="color: var(--text-light); text-decoration: none;">Home</a></span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item"><a href="/Admin/MenuItems" style="color: var(--text-light); text-decoration: none;">Menu Items</a></span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">Create</span>
+    </div>
+</div>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title"> Create New Menu Item</h1>
+    </div>
+</div>
+
+<div class="form-container">
+    <div class="form-card">
+ 
+
+
+        <form asp-action="Create" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="All"></div>
+
+            <div class="form-group">
+
+                <label asp-for="ItemName" class="form-label">
+                    Item Name *
+                </label>
+
+                <div class="input-group">
+
+                    <input type="text"
+                           name="ItemName"
+                           id="ItemName"
+                           class="form-control with-icon"
+                           placeholder="e.g., Margherita Pizza, Fresh Juice">
+
+
+                </div>
+
+                <span asp-validation-for="ItemName"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="Category" class="form-label">
+                    Category *
+                </label>
+
+                <div class="input-group">
+
+                    <input type="text"
+                           name="Category"
+                           id="Category"
+                           class="form-control with-icon"
+                           placeholder="e.g., Main Course, Dessert, Beverage, Appetizer">
+
+
+                </div>
+
+                <span asp-validation-for="Category"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="Price" class="form-label">
+                    Price 
+                </label>
+
+                <div class="input-group">
+
+                    <input type="number"
+                           name="Price"
+                           id="Price"
+                           class="form-control with-icon"
+                           step="0.01">
+
+
+                </div>
+
+                <span asp-validation-for="Price"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="ImageUrl" class="form-label">
+                    Image URL
+                </label>
+
+                <div class="input-group">
+
+                    <input type="text"
+                           name="ImageUrl"
+                           id="ImageUrl"
+                           class="form-control with-icon"
+                           placeholder="https://example.com/image.jpg">
+
+
+                </div>
+
+                <span asp-validation-for="ImageUrl"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+
+                    <input type="checkbox"
+                           name="IsActive"
+                           value="true"
+                           style="margin-right: 8px; cursor: pointer;" />
+                    <input type="hidden"
+                           name="IsActive"
+                           value="false" />
+                    Active Status
+
+                </label>
+
+                <p style="color: var(--text-light); font-size: 12px; margin-top: 6px;">
+                    Enable this item for event booking
+                </p>
+
+            </div>
+
+            <div class="form-actions">
+
+                <a href="@Url.Action("Index")"
+                   class="btn btn-secondary">
+
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Create Menu Item
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,438 @@
+@{
+    ViewData["Title"] = "About Us - Elite Events";
+}
+
+<style>
+    .section {
+        padding: 3rem 2rem;
+        border-bottom: 2px solid #E0C49F;
+    }
+
+    .section:last-child {
+        border-bottom: none;
+    }
+
+    .section-title {
+        color: #2B1408;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        border-bottom: 3px solid #734120;
+        padding-bottom: 1rem;
+    }
+
+    .section-subtitle {
+        color: #734120;
+        font-size: 1.3rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .section-text {
+        color: #666;
+        line-height: 1.8;
+        font-size: 1.05rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-section {
+        background: linear-gradient(135deg, #2B1408 0%, #452816 100%);
+        color: #F5EFE1;
+        padding: 4rem 2rem;
+        text-align: center;
+        border-radius: 10px;
+        margin-bottom: 3rem;
+    }
+
+    .hero-section h1 {
+        color: #E0C49F;
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-section p {
+        font-size: 1.2rem;
+        margin-bottom: 0;
+    }
+
+    .mission-vision-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .mission-box, .vision-box {
+        background-color: #F5EFE1;
+        padding: 2rem;
+        border-radius: 10px;
+        border-left: 4px solid #734120;
+    }
+
+    .mission-box h3, .vision-box h3 {
+        color: #2B1408;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+
+    .mission-box p, .vision-box p {
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .value-card {
+        background: white;
+        border: 2px solid #E0C49F;
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .value-card:hover {
+        border-color: #734120;
+        box-shadow: 0 4px 12px rgba(43, 20, 8, 0.15);
+        transform: translateY(-5px);
+    }
+
+    .value-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .value-title {
+        color: #2B1408;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .value-description {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .team-member {
+        background: white;
+        border: 2px solid #E0C49F;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(43, 20, 8, 0.1);
+    }
+
+    .team-member:hover {
+        border-color: #734120;
+        box-shadow: 0 8px 20px rgba(43, 20, 8, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .team-member-image {
+        height: 300px;
+        background: linear-gradient(135deg, #E0C49F 0%, #734120 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+    }
+
+    .team-member-info {
+        padding: 1.5rem;
+    }
+
+    .team-member-name {
+        color: #2B1408;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 0.3rem;
+    }
+
+    .team-member-position {
+        color: #734120;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+    }
+
+    .team-member-bio {
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .service-card {
+        background: white;
+        border: 2px solid #E0C49F;
+        border-radius: 10px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .service-card:hover {
+        border-color: #734120;
+        box-shadow: 0 4px 12px rgba(43, 20, 8, 0.15);
+        transform: translateY(-5px);
+    }
+
+    .service-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+
+    .service-title {
+        color: #2B1408;
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .service-description {
+        color: #666;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    .cta-section {
+        background-color: #F5EFE1;
+        padding: 2.5rem;
+        border-radius: 10px;
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .cta-section h3 {
+        color: #2B1408;
+        margin-bottom: 1rem;
+    }
+
+    .cta-button {
+        background-color: #734120;
+        color: white;
+        padding: 0.8rem 2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        margin: 0.5rem;
+    }
+
+    .cta-button:hover {
+        background-color: #2B1408;
+        color: #E0C49F;
+        text-decoration: none;
+    }
+
+   
+</style>
+
+<!-- Hero Section -->
+<div class="hero-section">
+    <h1> About  The Roastery</h1>
+    <p>Your Premier Destination for Unforgettable Events</p>
+</div>
+
+<!-- Company Overview -->
+<div class="section">
+    <h2 class="section-title">Our Story</h2>
+    <p class="section-text">
+        The Roastery Restaurant was founded with a simple vision: to create unforgettable memories through exceptional event management and gourmet catering services. With over 10 years of experience in the hospitality industry, we have become the trusted choice for weddings, corporate events, birthdays, and all special occasions.
+    </p>
+    <p class="section-text">
+        Our team of dedicated professionals combines creativity, attention to detail, and passion for excellence to deliver events that exceed expectations. From intimate gatherings to grand celebrations, we are committed to making your event truly special.
+    </p>
+</div>
+
+<!-- Mission & Vision -->
+<div class="section">
+    <h2 class="section-title">Our Mission & Vision</h2>
+    
+    <div class="mission-vision-grid">
+        <div class="mission-box">
+            <h3> Our Mission</h3>
+            <p>
+                To deliver exceptional event management and catering services that celebrate life's important moments with elegance, creativity, and professionalism. We strive to make every event a memorable experience that our clients treasure forever.
+            </p>
+        </div>
+        
+        <div class="vision-box">
+            <h3> Our Vision</h3>
+            <p>
+                To be the most trusted and preferred event management company, known for our innovative approach, outstanding service, and commitment to excellence. We aim to set new standards in the industry and inspire clients to celebrate life in style.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Core Values -->
+<div class="section">
+    <h2 class="section-title">Our Core Values</h2>
+    
+    <div class="values-grid">
+        <div class="value-card">
+            <div class="value-title">Excellence</div>
+            <p class="value-description">
+                We maintain the highest standards in every aspect of our service, from menu planning to event execution.
+            </p>
+        </div>
+
+        <div class="value-card">
+            <div class="value-title">Customer Focus</div>
+            <p class="value-description">
+                Your satisfaction is our priority. We listen to your needs and deliver personalized solutions.
+            </p>
+        </div>
+
+        <div class="value-card">
+            <div class="value-title">Creativity</div>
+            <p class="value-description">
+                We bring innovative ideas and unique concepts to make your event stand out from the rest.
+            </p>
+        </div>
+
+        <div class="value-card">
+            <div class="value-title">Integrity</div>
+            <p class="value-description">
+                We believe in transparent communication and building lasting relationships with our clients.
+            </p>
+        </div>
+
+        <div class="value-card">
+            <div class="value-title">Reliability</div>
+            <p class="value-description">
+                You can count on us to deliver on our promises and exceed your expectations every time.
+            </p>
+        </div>
+
+        <div class="value-card">
+            <div class="value-title">Innovation</div>
+            <p class="value-description">
+                We constantly evolve and adopt latest trends to provide cutting-edge event solutions.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Our Services -->
+<div class="section">
+    <h2 class="section-title">Our Services</h2>
+    
+    <div class="services-grid">
+        <div class="service-card">
+            <div class="service-title">Wedding Events</div>
+            <p class="service-description">
+                From intimate ceremonies to grand receptions, we create magical moments for your special day.
+            </p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-title">Birthday Celebrations</div>
+            <p class="service-description">
+                Age-appropriate celebrations with customized themes, decorations, and culinary offerings.
+            </p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-title">Corporate Events</div>
+            <p class="service-description">
+                Professional conferences, product launches, and team-building events with seamless execution.
+            </p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-title">Party Planning</div>
+            <p class="service-description">
+                Creative party concepts with themed decorations, entertainment, and delicious food.
+            </p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-title">Gourmet Catering</div>
+            <p class="service-description">
+                Customized menus featuring local and international cuisines prepared by expert chefs.
+            </p>
+        </div>
+
+        <div class="service-card">
+            <div class="service-title">Decoration Services</div>
+            <p class="service-description">
+                Elegant and stunning decorations tailored to your vision and theme preferences.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="section">
+    <div class="cta-section">
+        <h3>Ready to Create Your Perfect Event?</h3>
+        <p style="color: #666; margin-bottom: 1.5rem;">
+            Let's work together to make your celebration unforgettable. Contact us today!
+        </p>
+        <a asp-controller="Inquiries" asp-action="Index" class="cta-button">
+             Send Inquiry
+        </a>
+        <a asp-controller="EventTypes" asp-action="Index" class="cta-button">
+             Browse Packages
+        </a>
+        <a asp-controller="EventBookings" asp-action="CustomEvent" class="cta-button">
+             Create Custom Event
+        </a>
+    </div>
+</div>
+
+<!-- Contact Information -->
+<div class="section" style="background-color: #F5EFE1;">
+    <h2 class="section-title">Get In Touch</h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; text-align: center;">
+        <div>
+            <h4 style="color: #2B1408; margin-bottom: 0.5rem;">Address</h4>
+            <p style="color: #666; margin-bottom: 0;">
+                The Roastery , vesu surat Gujarat<br>
+                
+            </p>
+        </div>
+
+        <div>
+            <h4 style="color: #2B1408; margin-bottom: 0.5rem;">Phone</h4>
+            <p style="color: #666; margin-bottom: 0;">
+                9839847563
+            </p>
+        </div>
+
+        <div>
+            <h4 style="color: #2B1408; margin-bottom: 0.5rem;">Email</h4>
+            <p style="color: #666; margin-bottom: 0;">
+                theroastery16@gmail.com
+            </p>
+        </div>
+    </div>
+</div>

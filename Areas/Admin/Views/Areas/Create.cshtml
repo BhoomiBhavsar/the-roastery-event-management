@@ -1,0 +1,216 @@
+@model EventMVC.Models.Area
+
+@{
+    ViewData["Title"] = "Create Area";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .form-container {
+        max-width: 600px;
+    }
+
+    .form-card {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .form-actions .btn {
+        flex: 1;
+    }
+
+    .validation-message {
+        color: var(--danger);
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        pointer-events: none;
+    }
+
+    .form-control.with-icon {
+        padding-right: 45px;
+    }
+</style>
+
+<div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <span class="breadcrumb-item"><a href="/" style="color: var(--text-light); text-decoration: none;">Home</a></span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item"><a href="/Admin/Areas" style="color: var(--text-light); text-decoration: none;">Areas</a></span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">Create</span>
+    </div>
+</div>
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title"> Create New Area</h1>
+    </div>
+</div>
+
+
+
+<div class="form-container">
+    <div class="form-card">
+
+     <form asp-action="Create" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger"
+                 style="display: none;">
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Area Name *
+                </label>
+
+                <input type="text"
+                       name="AreaName"
+                       id="AreaName"
+                       class="form-control"
+                       placeholder="e.g., Hall A, Rooftop Area" />
+
+                <span asp-validation-for="AreaName"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Seating Capacity *
+                </label>
+
+                <div class="input-group">
+
+                    <input name="Capacity"
+                           id="Capacity"
+                           class="form-control with-icon"
+                           type="number"
+                           placeholder="e.g., 100"
+                           min="1" />
+
+
+                </div>
+
+                <span asp-validation-for="Capacity"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Price Per Guest 
+                </label>
+
+                <div class="input-group">
+
+                    <input name="PricePerGuest"
+                           id="PricePerGuest"
+                           class="form-control with-icon"
+                           type="number"
+                           placeholder="e.g., 500"
+                           min="0"
+                           step="0.01" />
+
+
+                </div>
+
+                <span asp-validation-for="PricePerGuest"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Image URL
+                </label>
+
+                <div class="input-group">
+
+                    <input name="ImageUrl"
+                           id="ImageUrl"
+                           class="form-control with-icon"
+                           placeholder="https://example.com/image.jpg" />
+
+
+                </div>
+
+                <span asp-validation-for="ImageUrl"
+                      class="validation-message">
+                </span>
+
+            </div>
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    <input type="checkbox"
+                           name="IsActive"
+                           id="IsActive"
+                           value="true"
+                           style="margin-right: 8px; cursor: pointer;" />
+
+                    <input type="hidden"
+                           name="IsActive"
+                           value="false" />
+                    Active Status
+
+                </label>
+
+                <p style="color: var(--text-light); font-size: 12px; margin-top: 6px;">
+                    Enable this area for booking
+                </p>
+
+            </div>
+
+            <div class="form-actions">
+
+                <a href="/Admin/Areas/Index"
+                   class="btn btn-secondary">
+
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Create Area
+                </button>
+
+            </div>
+
+        </form>
+</div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

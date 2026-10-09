@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Dashboard</title>
+    @* <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #003135;
+            --primary-light: #AFDDE5;
+            --primary-teal: #0FA4AF;
+            --white: #FFFFFF;
+            --light-bg: #F8FAFB;
+            --border-color: #E5EAED;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --success: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .admin-sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #001a1f 100%);
+            color: var(--white);
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 49, 53, 0.2);
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-teal);
+        }
+
+        .sidebar-logo {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-teal);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-nav-link:hover {
+            background-color: rgba(175, 221, 229, 0.15);
+            color: var(--white);
+            border-left-color: var(--primary-teal);
+            padding-left: 18px;
+        }
+
+        .sidebar-nav-link.active {
+            background-color: var(--primary-teal);
+            color: var(--white);
+            border-left-color: var(--white);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* MAIN CONTENT */
+        .admin-content {
+            flex: 1;
+            margin-left: 280px;
+            overflow-y: auto;
+        }
+
+        /* HEADER */
+        .admin-header {
+            background: var(--white);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        /* MAIN */
+        .admin-main {
+            padding: 30px;
+        }
+
+        /* BREADCRUMB */
+        .breadcrumb-container {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .breadcrumb-item {
+            color: var(--text-light);
+        }
+
+        .breadcrumb-item.active {
+            color: var(--primary-teal);
+            font-weight: 600;
+        }
+
+        .breadcrumb-separator {
+            color: var(--border-color);
+        }
+
+        /* PAGE HEADER */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-teal);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #0d8a95;
+            box-shadow: 0 4px 12px rgba(15, 164, 175, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            border: 1px solid var(--primary-teal);
+        }
+
+        .btn-secondary:hover {
+            background-color: #9dd1d8;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        /* TABLE */
+        .table-container {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table thead {
+            background-color: var(--primary-dark);
+            color: var(--white);
+        }
+
+        .table th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table tbody tr:hover {
+            background-color: #F3F4F6;
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* STATUS BADGE */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-active {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .badge-inactive {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        /* FORM */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 3px rgba(15, 164, 175, 0.1);
+        }
+
+        .form-control:disabled {
+            background-color: var(--light-bg);
+            color: var(--text-light);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* CARD */
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ALERT */
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .alert-danger {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .alert-warning {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid var(--warning);
+        }
+
+        /* ACTIONS COLUMN */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 6px 10px;
+            font-size: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .action-btn-edit {
+            background-color: var(--primary-teal);
+            color: var(--white);
+        }
+
+        .action-btn-edit:hover {
+            background-color: #0d8a95;
+        }
+
+        .action-btn-delete {
+            background-color: var(--danger);
+            color: var(--white);
+        }
+
+        .action-btn-delete:hover {
+            background-color: #dc2626;
+        }
+
+        .action-btn-view {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .action-btn-view:hover {
+            background-color: #9dd1d8;
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: var(--text-light);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+        /* RESPONSIVE */
+      
+    </style> *@
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #734120;
+            --primary-light: #E0C49F;
+            --primary-teal: #B5885E;
+            --white: #FFFFFF;
+            --light-bg: #F8F5F1;
+            --border-color: #E7D7C3;
+            --text-dark: #4A2C17;
+            --text-light: #8B6B52;
+            --success: #8A5A3B;
+            --danger: #A94438;
+            --warning: #C28B4E;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .admin-sidebar {
+            width: 280px;
+            background: #734120;
+            color: var(--white);
+            padding: 30px 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 12px rgba(115, 65, 32, 0.15);
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(224, 196, 159, 0.25);
+        }
+
+        .sidebar-logo {
+            width: 50px;
+            height: 50px;
+            background: #B5885E;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 12px;
+            color: white;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav-item {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+            .sidebar-nav-link:hover {
+                background: rgba(224, 196, 159, 0.12);
+                color: var(--white);
+                border-left-color: #E0C49F;
+            }
+
+            .sidebar-nav-link.active {
+                background: #B5885E;
+                color: var(--white);
+                border-left-color: #E0C49F;
+            }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* MAIN CONTENT */
+        .admin-content {
+            flex: 1;
+            margin-left: 280px;
+            overflow-y: auto;
+        }
+
+        /* HEADER */
+        .admin-header {
+            background: var(--white);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .header-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #B5885E;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        /* MAIN */
+        .admin-main {
+            padding: 30px;
+        }
+
+        /* BREADCRUMB */
+        .breadcrumb-container {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .breadcrumb-item {
+            color: var(--text-light);
+        }
+
+            .breadcrumb-item.active {
+                color: var(--primary-dark);
+                font-weight: 600;
+            }
+
+        .breadcrumb-separator {
+            color: #CBB59B;
+        }
+
+        /* PAGE HEADER */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #734120;
+            color: white;
+            box-shadow: none;
+        }
+
+            .btn-primary:hover {
+                background: #8B552D;
+                box-shadow: none;
+            }
+
+        .btn-secondary {
+            background: #E0C49F;
+            color: #734120;
+            border: 1px solid #D6B48A;
+        }
+
+            .btn-secondary:hover {
+                background: #D6B48A;
+            }
+
+        .btn-danger {
+            background: #A94438;
+            color: white;
+        }
+
+            .btn-danger:hover {
+                background: #8B3A30;
+                box-shadow: none;
+            }
+
+        .btn-success {
+            background: #8A5A3B;
+            color: white;
+        }
+
+            .btn-success:hover {
+                background: #6E472E;
+            }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+
+        /* TABLE */
+        .table-container {
+            background: var(--white);
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .table thead {
+                background: #734120;
+                color: white;
+            }
+
+            .table th {
+                padding: 16px;
+                text-align: left;
+                font-weight: 600;
+                font-size: 14px;
+            }
+
+            .table td {
+                padding: 16px;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .table tbody tr:hover {
+                background: #F6EFE8;
+            }
+
+            .table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+        /* STATUS BADGE */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-active {
+            background: rgba(138, 90, 59, 0.12);
+            color: #8A5A3B;
+        }
+
+        .badge-inactive {
+            background: rgba(169, 68, 56, 0.12);
+            color: #A94438;
+        }
+
+        /* FORM */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: white;
+        }
+
+            .form-control:focus {
+                outline: none;
+                border-color: #B5885E;
+                box-shadow: 0 0 0 3px rgba(181, 136, 94, 0.15);
+            }
+
+            .form-control:disabled {
+                background: #F5EFE8;
+                color: var(--text-light);
+            }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* CARD */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #734120;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ALERT */
+        .alert {
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-success {
+            background: rgba(138, 90, 59, 0.12);
+            color: #8A5A3B;
+            border: 1px solid rgba(138, 90, 59, 0.2);
+        }
+
+        .alert-danger {
+            background: rgba(169, 68, 56, 0.12);
+            color: #A94438;
+            border: 1px solid rgba(169, 68, 56, 0.2);
+        }
+
+        .alert-warning {
+            background: rgba(194, 139, 78, 0.12);
+            color: #C28B4E;
+            border: 1px solid rgba(194, 139, 78, 0.2);
+        }
+
+        /* ACTION BUTTONS */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 6px 10px;
+            font-size: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .action-btn-edit {
+            background: #734120;
+            color: white;
+        }
+
+            .action-btn-edit:hover {
+                background: #8B552D;
+            }
+
+        .action-btn-delete {
+            background: #A94438;
+            color: white;
+        }
+
+            .action-btn-delete:hover {
+                background: #8B3A30;
+            }
+
+        .action-btn-view {
+            background: #E0C49F;
+            color: #734120;
+        }
+
+            .action-btn-view:hover {
+                background: #D6B48A;
+            }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: var(--text-light);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+            .modal.show {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #734120;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: flex-end;
+        }
+
+
+
+
+
+    </style>
+
+
+</head>
+<body>
+    <div class="admin-container">
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-title">Event Admin</div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <li class="sidebar-nav-item">
+                    <a class="sidebar-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" ? "active" : "")" 
+                       href="AdminDashboard" title="Dashboard">
+                        <span class="nav-icon"></span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a class="sidebar-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "EventTypes" ? "active" : "")" 
+                       href="/Admin/EventTypes" title="Event Types">
+                        <span class="nav-icon"></span>
+                        <span>Event Types</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a class="sidebar-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Areas" ? "active" : "")" 
+                       href="/Admin/Areas" title="Areas">
+                        <span class="nav-icon"></span>
+                        <span>Areas</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a class="sidebar-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "MenuItems" ? "active" : "")" 
+                       href="/Admin/MenuItems" title="Menu Items">
+                        <span class="nav-icon"></span>
+                        <span>Menu Items</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a class="sidebar-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Decorations" ? "active" : "")" 
+                       href="/Admin/Decorations" title="Decorations">
+                        <span class="nav-icon"></span>
+                        <span>Decorations</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a class="sidebar-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "AddOns" ? "active" : "")" 
+                       href="/Admin/AddOns" title="Add-ons">
+                        <span class="nav-icon"></span>
+                        <span>Add-ons</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a class="sidebar-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "EventPackages" ? "active" : "")" 
+                       href="/Admin/EventPackages" title="Event Packages">
+                        <span class="nav-icon"></span>
+                        <span>Event Packages</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-nav-item">
+                    <a class="sidebar-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "AdminUsers" ? "active" : "")"
+                       href="/Admin/AdminUsers"
+                       title="User Details">
+
+                        <span class="nav-icon"></span>
+
+                        <span>User Details</span>
+
+                    </a>
+                </li>
+
+                <li class="sidebar-nav-item">
+                    <a class="sidebar-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Inquiries" ? "active" : "")"
+                       href="/Admin/Inquiries"
+                       title="Customer Inquiries">
+                        <span class="nav-icon"></span>
+                        <span>Inquiries</span>
+                    </a>
+                </li>
+                <li class="sidebar-nav-item">
+                    <a class="sidebar-nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "AdminBookings" ? "active" : "")"
+                       href="/Admin/AdminBookings"
+                       title="Bookings">
+
+                        <span class="nav-icon"></span>
+                        <span>Bookings</span>
+                    </a>
+                </li>
+
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="admin-content">
+            <!-- HEADER -->
+            <header class="admin-header">
+                <div class="header-title">@ViewData["Title"]</div>
+                <div class="header-user">
+                    <span>Admin</span>
+                    <div class="user-avatar">A</div>
+                   
+                        <form asp-area="Identity"
+                              asp-page="/Account/Logout"
+                              asp-route-returnUrl="/Identity/Account/Login"
+                              method="post"
+                              class="d-inline">
+
+                            <button type="submit"
+                                    class="nav-link btn btn-link text-light border-0">
+                                Logout
+                            </button>
+
+                        </form>
+                 
+                </div>
+            </header>
+
+            <!-- MAIN -->
+            <main class="admin-main">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Delete confirmation
+        function confirmDelete(name) {
+            return confirm(`Are you sure you want to delete ${name}?`);
+        }
+
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        // Open modal
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        // Close modal on outside click
+        window.addEventListener('click', function (event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('show');
+            }
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

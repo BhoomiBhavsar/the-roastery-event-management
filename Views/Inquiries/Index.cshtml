@@ -1,0 +1,249 @@
+@{
+    ViewData["Title"] = "Inquiry - Elite Events";
+}
+
+<style>
+    .inquiry-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(43, 20, 8, 0.12);
+        overflow: hidden;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .inquiry-header {
+        background: linear-gradient(135deg, #2B1408 0%, #452816 100%);
+        color: #F5EFE1;
+        padding: 2.5rem 2rem;
+        text-align: center;
+    }
+
+    .inquiry-header h1 {
+        color: #E0C49F;
+        font-size: 2rem;
+        margin: 0 0 0.5rem 0;
+    }
+
+    .inquiry-header p {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .inquiry-body {
+        padding: 3rem;
+    }
+
+    .info-box {
+        background-color: #d1ecf1;
+        border: 1px solid #bee5eb;
+        border-radius: 5px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        color: #0c5460;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        color: #2B1408;
+        font-weight: 600;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .required {
+        color: #d32f2f;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #E0C49F;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #734120;
+        box-shadow: 0 0 0 0.2rem rgba(115, 65, 32, 0.1);
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 150px;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-help {
+        font-size: 0.85rem;
+        color: #999;
+        margin-top: 0.3rem;
+    }
+
+    .action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .btn-submit {
+        background-color: #734120;
+        color: white;
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+    }
+
+    .btn-submit:hover {
+        background-color: #2B1408;
+        color: #E0C49F;
+    }
+
+    .btn-cancel {
+        background-color: #E0C49F;
+        color: #2B1408;
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        text-decoration: none;
+        text-align: center;
+    }
+
+    .btn-cancel:hover {
+        background-color: #F5EFE1;
+        color: #2B1408;
+        text-decoration: none;
+    }
+</style>
+
+<div class="inquiry-container">
+    <div class="inquiry-header">
+        <h1> Send Us Your Inquiry</h1>
+        <p>We'd love to hear from you. Fill out the form below and we'll get back to you soon!</p>
+    </div>
+
+    <div class="inquiry-body">
+        <div class="info-box">
+            <strong> Note:</strong> Please provide as much detail as possible to help us understand your requirements and provide the best service.
+        </div>
+
+        <form method="post" asp-action="Submit">
+            <div class="form-grid">
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    <div class="form-help">First and last name</div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    <div class="form-help">We'll use this to contact you</div>
+                </div>
+
+                <!-- Phone -->
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number <span class="required">*</span></label>
+                    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+1 (555) 123-4567" required>
+                    <div class="form-help">10-15 digits with country code</div>
+                </div>
+
+                <!-- Event Type -->
+                <div class="form-group">
+                    <label for="eventTypeId">Event Type <span class="required">*</span></label>
+                    <select id="eventTypeId" name="eventTypeId" required>
+                        <option value="">-- Select Event Type --</option>
+                        @if (ViewBag.EventTypes != null)
+                        {
+                            @foreach (var eventType in ViewBag.EventTypes)
+                            {
+                                <option value="@eventType.EventTypeId">@eventType.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <!-- Event Date -->
+                <div class="form-group">
+                    <label for="eventDate">Preferred Event Date <span class="required">*</span></label>
+                    <input type="date" id="eventDate" name="eventDate" required>
+                    <div class="form-help">Tentative date for your event</div>
+                </div>
+
+                <!-- Guest Count -->
+                <div class="form-group">
+                    <label for="guestCount">Expected Guest Count <span class="required">*</span></label>
+                    <input type="number" id="guestCount" name="guestCount" min="1" placeholder="Number of guests" required>
+                    <div class="form-help">Approximate number of guests</div>
+                </div>
+
+                <!-- Message -->
+                <div class="form-group full-width">
+                    <label for="message">Message <span class="required">*</span></label>
+                    <textarea id="message" name="message" placeholder="Tell us about your event requirements, budget, preferences, or any special requests..." required></textarea>
+                    <div class="form-help">Minimum 10 characters</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button type="submit" class="btn-submit">✓ Send Inquiry</button>
+                <a asp-controller="Home" asp-action="Index" class="btn-cancel">← Cancel</a>
+            </div>
+        </form>
+
+        <!-- Contact Info -->
+        <div style="background-color: #F5EFE1; padding: 2rem; border-radius: 10px; margin-top: 3rem; text-align: center;">
+            <h4 style="color: #2B1408; margin-bottom: 1rem;">📞 Other Ways to Contact Us</h4>
+            <p style="color: #666; margin-bottom: 0.5rem;"><strong>📍 Address:</strong> The Roastery , vesu surat Gujarat</p>
+            <p style="color: #666; margin-bottom: 0.5rem;"><strong>📞 Phone:</strong> 9839847563</p>
+            <p style="color: #666; margin-bottom: 0;"><strong>✉️ Email:</strong>theroastery16@gmail.com</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Set minimum date to tomorrow
+    const today = new Date();
+    const tomorrow = new Date(today.setDate(today.getDate() + 1));
+    document.getElementById('eventDate').min = tomorrow.toISOString().split('T')[0];
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const message = document.getElementById('message').value;
+        if (message.length < 10) {
+            e.preventDefault();
+            alert('Please provide at least 10 characters in the message field.');
+        }
+    });
+</script>
